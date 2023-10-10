@@ -1,0 +1,192 @@
+﻿@model IList<PkHiveLibrary.Models.TestQuestion>
+@{
+}
+<style>
+    /* Hide all steps by default: */
+    .tab {
+        display: none;
+    }
+
+    /* .page-item.active .page-link {
+             background-color: rgba(0,0,0,0.5);
+         }*/
+
+    .page-link.checked {
+        color: white;
+        background-color: #66BB6A;
+    }
+
+    .page-item.active .page-link.checked {
+        color: white;
+        background-color: #1B5E20;
+    }
+
+</style>
+<br />
+<br />
+<div class="border border-1 p-3 mb-2">
+    <h1>Pak Studies</h1>
+    <div class="d-flex flex-row justify-content-between">
+    <span class="fs-5"><i class="fas fa-bars me-2"></i>15 Questions</span>
+    <span class="timer fs-5"><i class="fas fa-clock me-2"></i><span id="time">15m 0s</span></span>
+    <button class="btn btn-primary btn-sm btn-strat">Start Now</button>
+    <button class="btn btn-primary btn-sm btn-submit">Submit Now</button>
+    </div>
+</div>
+
+<section id="test-section">
+    <div class="card border shadow-none rounded-0 card-test">
+        <form method="post" asp-action="SaveExam" class="test-form">
+            @for (int i = 0; i < Model.Count(); i++)
+            {
+                <input asp-for="@Model[i].QuestionId" type="hidden" />
+                <div class="tab">
+                    <div class="card-header bg-info text-white rounded-0 fs-5">
+                        <p>Q#@(i+1): @Model[i].Question.Text</p>
+                    </div>
+                    <div class="card-body">
+                        <ol type="A">
+                            @for (int x = 0; x < 4; x++)
+                            {
+                                <li class="mb-2">
+                                    <div class="d-lg-grid">
+                                        <input type="radio" asp-for="@Model[i].SelectedOptionId" id="@Model[i].Question.Options[x].Id" value="@Model[i].Question.Options[x].Id" class="btn-check" onclick="markIndicator(@i)">
+                                        <label class="btn btn-light btn-lg shadow-none text-start" for="@Model[i].Question.Options[x].Id">@Model[i].Question.Options[x].Text</label>
+                                    </div>
+                                </li>
+                            }
+                        </ol>
+                    </div>
+                </div>
+            }
+            <div class="card-footer text-center py-3">
+                <button class="btn btn-link float-start shadow-none" type="button" id="prevBtn" onclick="nextPrev(-1)"><i class="fa fa-arrow-left" aria-hidden="true"></i> Previous</button>
+                <span class="text-lg-center"><strong><span id="q-count">1</span>/@Model.Count()</strong></span>
+                <button class="btn btn-link float-end shadow-none" type="button" id="nextBtn" onclick="nextPrev(1)">Next <i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+            </div>
+        </form>
+    </div>
+    <br />
+    <ul class="pagination justify-content-center gap-2 flex-wrap">
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            <li class="page-item"><button class="btn btn-sm page-link" onclick="pageLink(@i)">@(i+1)</button></li>
+        }
+    </ul>
+</section>
+<br />
+@section scripts{
+    <script>
+        var currentTab = 0;
+        showTab(currentTab);
+        fixStepIndicator(currentTab);
+        $('#test-section').hide();
+        $('.btn-submit').hide();
+
+        function showTab(n) {
+
+            var x = document.getElementsByClassName("tab");
+
+            $('#q-count').text(n + 1);
+            x[n].style.display = "block";
+
+            if (n == 0) {
+                $("#prevBtn").prop('disabled', true);
+            } else {
+                $("#prevBtn").prop('disabled', false);
+            }
+            if (n == (x.length - 1)) {
+                $("#nextBtn").prop('disabled', true);
+            } else {
+                $("#nextBtn").prop('disabled', false);
+            }
+            fixStepIndicator(n);
+        }
+
+        function nextPrev(n) {
+
+            var x = document.getElementsByClassName("tab");
+
+            if (n >= x.length) {
+                return false;
+            }
+
+            x[currentTab].style.display = "none";
+
+            currentTab = currentTab + n;
+
+            showTab(currentTab);
+        }
+
+        function pageLink(n) {
+
+            var x = document.getElementsByClassName("tab");
+
+            if (n >= x.length) {
+                return false;
+            }
+
+            x[currentTab].style.display = "none";
+
+            currentTab = n;
+
+            showTab(currentTab);
+        }
+
+        $('.btn-strat').on('click', function() {
+
+            $(this).hide();
+            $('.btn-submit').show();
+            $('#test-section').show();
+
+            var countDownTime = new Date().getTime() + 15 * 60 * 1000;
+
+            setInterval(function() {
+
+                var now = new Date().getTime();
+
+                var distance = countDownTime - now;
+
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById("time").innerHTML = minutes + "m " + seconds + "s";
+
+                if (distance < 0) {
+                    $('.test-form').submit();
+                }
+            }, 1000);
+
+            $.ajax({
+                'url': '/exam/settempdata',
+                'method': 'get'
+            });
+        });
+
+        $('.btn-submit').on('click', function() {
+             $('.test-form').submit();
+        })
+
+        function fixStepIndicator(n) {
+
+            var i, x = $('.page-item');
+
+            for (i = 0; i < x.length; i++) {
+                $(x[i]).removeClass('active');
+            }
+
+            $(x[n]).addClass('active');
+
+        }
+
+        function markIndicator(n) {
+
+            var x = $('.page-item');
+
+            $(x[n]).children().addClass('checked');
+
+            pageLink(n + 1);
+        }
+
+    </script>
+}

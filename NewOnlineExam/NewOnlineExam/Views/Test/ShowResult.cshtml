@@ -1,0 +1,175 @@
+﻿@{
+    ViewBag.Title = "Result";
+    ViewBag.ReturnUrl = Url.Action("ShowResult", "Test");
+    Session["ReturnUrl"] = Url.Action("ShowResult", "Test");
+}
+<style>
+    .card {
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+
+    .card-body {
+        background: #eeeeee;
+        padding: 0px;
+    }
+
+    .card-header {
+        background: #009688;
+    }
+
+    .card-footer {
+        background: #009688;
+    }
+
+    /*.card-col {
+        background: #009688;
+    }*/
+</style>
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <div class="card r-card" style="display:none">
+
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 card-col purple-gradient-rgba text-center text-white p-5">
+                        <div class="my-3"><span class="font-weight-bold border p-3" id="icon" style="border-radius:100%; font-size:40px;"></span></div>
+                        <h2 id="full-name"></h2>
+                        <span id="user-name"></span>
+                    </div>
+                    <div class="col-md-6 p-5">
+                        <h6 class="text-muted">Marks</h6>
+                        <h5><span id="user-percentage"></span></h5><hr />
+                        <h6 class="text-muted">Skill Category</h6>
+                        <h5><span id="user-test-category"></span></h5><hr />
+                        <h6 class="text-muted">Time Taken</h6>
+                        <h5><span id="user-timetaken"></span></h5><hr />
+                        <h6 class="text-muted">Date</h6>
+                        <h5><span id="user-test-date"></span></h5><hr />
+                        @*<p>Marks <strong><span id="user-percentage"></span></strong></p><hr />
+                        <p>Skill Category <strong><span id="user-test-category"></span></strong></p><hr />
+                        <p>Time Taken <strong><span id="user-timetaken"></span></strong></p><hr />
+                        <p>Date <strong><span id="user-test-date"></span></strong></p><hr />*@
+                        @*<i class="fas fa-share-alt mr-3 text-muted"></i>
+                            <a href="#" class="pr-3"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="pr-3"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>*@
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+
+<div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body mx-3">
+                @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @id = "login-form", @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="text-center px-3 py-5">
+
+                        <p class="h4 mb-4">Sign in</p>
+
+                        <!-- Email -->
+                        <div class="md-form">
+                            <input type="text" id="Email" name="Email" class="form-control" />
+                            <label class="mb-4">Email</label>
+                        </div>
+                        <div class="md-form">
+                            <input type="password" id="Password" name="Password" class="form-control" />
+                            <label class="mb-4">Password</label>
+                        </div>
+
+                        <div class="d-flex justify-content-around">
+                            <div>
+                                <!-- Remember me -->
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" />
+                                    <label>Remember me?</label>
+                                </div>
+                            </div>
+                            <div>
+                                <!-- Forgot password -->
+                                <a href="" data-toggle="modal" data-target="#modalForgotPassword">Forgot password?</a>
+                            </div>
+                        </div>
+
+                        <!-- Sign in button -->
+                        <button class="btn btn-info btn-block my-4" type="submit">Sign in</button>
+
+                        <!-- Register -->
+                        <p>
+                            Not a member?
+                            <a href="@Url.Action("Register", "Account")">Register</a>
+                        </p>
+
+                        <!-- Social login -->
+                        <p>or sign in with:</p>
+
+                        <a href="#" class="mx-2" role="button"><i class="fab fa-facebook-f light-blue-text"></i></a>
+                        <a href="#" class="mx-2" role="button"><i class="fab fa-twitter light-blue-text"></i></a>
+                        <a href="#" class="mx-2" role="button"><i class="fab fa-linkedin-in light-blue-text"></i></a>
+                        <a href="#" class="mx-2" role="button"><i class="fab fa-github light-blue-text"></i></a>
+
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+
+        if (!@Request.IsAuthenticated.ToString().ToLower())
+        {
+            $('#modalLoginForm').modal('toggle');
+        }
+        else
+        {
+            $.ajax({
+                method: 'Get',
+                url: '@Url.Action("GetTestResult", "Test")',
+                success: function (res) {
+                    if (res.Authenticated) {
+                        if (res.success) {
+                            $('#user-name').text(res.data.UserName);
+                            $('#user-percentage').text(res.data.Percentage + '%');
+                            $('#user-test-category').text(res.data.SkillCategory);
+                            $('#user-timetaken').text(res.data.TimeTaken);
+                            $('#user-test-date').text(res.data.Date);
+                            $('#full-name').text(res.data.FullName);
+                            $('#icon').text(res.data.icon);
+                            $('.r-card').show();
+                        }
+                        else {
+                            window.location.href = '/test';
+                        }
+                    }
+                    else {
+                        $('#modalLoginForm').modal('toggle');
+                    }
+                }
+            });
+
+        }
+
+        $('#modalLoginForm').on('hidden.bs.modal', function (e) {
+
+            if (!@Request.IsAuthenticated.ToString().ToLower()) {
+                $('#modalLoginForm').modal('toggle');
+            }
+
+        });
+
+
+    </script>
+}

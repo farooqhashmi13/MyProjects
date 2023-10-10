@@ -1,0 +1,227 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_LayoutResume";
+}
+
+<style>
+    .editabout {
+        display: none;
+    }
+
+    .about:hover .editabout {
+        display: block;
+    }
+</style>
+
+<!-- ======= Hero Section ======= -->
+@*<section id="hero" class="d-flex flex-column justify-content-center align-items-center">
+        <div class="hero-container" data-aos="fade-in">
+            <h1>Alex Smith</h1>
+            <p>I'm <span class="typed" data-typed-items="Designer, Developer, Freelancer, Photographer"></span></p>
+        </div>
+    </section>*@
+
+<!-- ======= About Section ======= -->
+<section id="about" class="about section-bg">
+    <div class="container" style="margin-top:55px">
+
+        <partial name="_about" />
+
+    </div>
+</section>
+
+<!-- ======= Education Section ======= -->
+<section id="education" class="resume">
+    <div class="container" style="margin-top:55px">
+
+        <partial name="_education" />
+
+    </div>
+</section>
+
+
+<!-- ======= Skills Section ======= -->
+<section id="skills" class="skills section-bg">
+    <div class="container" style="margin-top:55px">
+
+        <partial name="_skills" />
+
+    </div>
+</section>
+
+<!-- ======= Experience Section ======= -->
+<section id="experience" class="resume">
+    <div class="container" style="margin-top:55px">
+
+        <partial name="_experience" />
+
+    </div>
+</section>
+
+<!-- ======= Experience Section ======= -->
+<section id="projects" class="section-bg resume">
+    <div class="container" style="margin-top:55px">
+
+        <partial name="_projects" />
+
+    </div>
+</section>
+
+<!-- ======= Experience Section ======= -->
+<section id="contact" class="contact">
+    <div class="container" style="margin-top:55px">
+
+        <partial name="_contact" />
+
+    </div>
+</section>
+
+@section scripts{
+    <script>
+        //import { data } from "jquery";
+
+
+        LoadInfo();
+        LoadEdu();
+
+        function LoadInfo() {
+            $.ajax({
+                url: '/User/LoadInfo',
+                method: 'Get',
+                success: function (res) {
+                    if (res.success) {
+                        if (res.data) {
+
+                            $('#first-name').text(res.data.firstName);
+                            $('#last-name').text(res.data.lastName);
+                            $('#span-dob').text(res.data.doBs);
+                            $('#span-city').text(res.data.city);
+                            $('#span-country').text(res.data.country);
+                            $('#span-email').text(res.data.email);
+                            $('#span-phone').text(res.data.phone);
+                            $('#span-desc').text(res.data.description);
+                            $('#span-age').text(res.data.age);
+
+                            $('#edit-about').data('firstName', res.data.firstName);
+                            $('#edit-about').data('lastName', res.data.lastName);
+                            $('#edit-about').data('dob', res.data.dob);
+                            $('#edit-about').data('city', res.data.city);
+                            $('#edit-about').data('country', res.data.country);
+                            $('#edit-about').data('phone', res.data.phone);
+                            $('#edit-about').data('desc', res.data.description);
+
+                        }
+                    }
+                }
+            });
+        }
+
+        $('#edit-about').on('click', function () {
+
+            $('#Description').val($('#edit-about').data('desc'));
+            $('#FirstName').val($('#edit-about').data('firstName'));
+            $('#LastName').val($('#edit-about').data('lastName'));
+            $('#DOB').val($('#edit-about').data('dob'));
+            $('#City').val($('#edit-about').data('city'));
+            $('#Country').val($('#edit-about').data('country'));
+            $('#PhoneNumber').val($('#edit-about').data('phone'));
+
+            $('#aboutModal').modal('toggle');
+
+        });
+
+        function LoadEdu() {
+            $.ajax({
+                url: '/User/LoadEdu',
+                method: 'Get',
+                success: function (res) {
+                    if (res.success) {
+                        if (res.data) {
+                            $('#edu-item').empty();
+                            for (var i = 0; i < res.data.length; i++) {
+                                $('#edu-item').append('<div class="resume-item">'
+                                    + '<h4>'
+                                    + res.data[i].eduDegreeTitle
+                                    + '<div class="edu-icons">'
+                                    + '<a class="ml-5" href="javascript:void(0)" onclick="editEdu(this)" id="edu-edit-' + i + '">'
+                                    + '<i class= "fas fa-edit text-info" aria-hidden="true"></i>'
+                                    + '</a > '
+                                    + '<a class="ml-2" href="javascript:void(0)" onclick="delEdu(this)" id="edu-del-' + i + '">'
+                                    + '<i class="fa fa-trash text-danger" aria-hidden="true"></i>'
+                                    + '</a>'
+                                    + '</div>'
+                                    + '</h4>'
+                                    + '<h5>' + res.data[i].eduFromDateS + ' - ' + res.data[i].eduToDateS + '</h5>'
+                                    + '<p><em>' + res.data[i].eduInstitute + '</em></p>'
+                                    + '<p>' + res.data[i].eduDescription + '</p>'
+                                    + '</div>');
+                                $('#edu-edit-' + i).data('edu', res.data[i]);
+                                $('#edu-del-' + i).data('edu', res.data[i]);
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function editEdu(el) {
+            var edu = $(el).data('edu');
+            $('#EduId').val(edu.eduId)
+            $('#EduDegreeTitle').val(edu.eduDegreeTitle);
+            $('#EduFromDate').val(edu.eduFromDate);
+            $('#EduToDate').val(edu.eduToDate);
+            $('#EduInstitute').val(edu.eduInstitute);
+            $('#EduDescription').text(edu.eduDescription);
+            $('#eduModal').modal('show');
+        }
+
+        function delEdu(el) {
+            var edu = $(el).data('edu');
+            $.ajax({
+                url: '/User/DelEdu',
+                method: 'Delete',
+                data: { EduId: edu.eduId },
+                onSuccess: function (res) {
+                    if (res.success) {
+                        LoadEdu();
+                    }
+                    else {
+
+                    }
+                }
+            });
+        }
+
+        function onSuccess(res) {
+            if (res.success) {
+                $('#aboutModal').modal('hide');
+                LoadInfo();
+            }
+        }
+
+        function eduSuccess(res) {
+            if (res.success) {
+                $('#eduModal').modal('hide');
+                LoadEdu();
+            }
+        }
+
+
+
+    //$("#aboutModal").on('show.bs.modal', function () {
+
+    //    $('#Description').val($('#span-desc').text());
+    //    $('#FirstName').val($('#first-name').text());
+    //    $('#LastName').val($('#last-name').text());
+    //    //$('#DOB').val($('#span-dob').text());
+    //    $('#City').val($('#span-city').text());
+    //    $('#Country').val($('#span-country').text());
+    //    $('#PhoneNumber').val($('#span-phone').text());
+
+    //});
+
+    </script>
+}
+

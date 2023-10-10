@@ -1,0 +1,153 @@
+﻿@{
+    ViewData["Title"] = "Exams";
+    Layout = "_LayoutAdmin";
+}
+
+<br />
+
+<h3>Exams</h3>
+<hr />
+
+<!-- Modal -->
+<div class="modal fade" id="examsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label>Select Subject</label>
+                <select id="SubjectId" class="form-control" asp-items="ViewBag.SubjectId"></select>
+                <label></label>
+                <input type="text" class="form-control" id="UserName"/>
+                <label></label>
+                <input type="text" class="form-control" id="GainedMarks"/>
+                <label></label>
+                <input type="text" class="form-control" id="TotalMarks"/>
+                <label></label>
+                <input type="date" class="form-control" id="ExamDate"/>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-save">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<table id="exams-dt" class="table table-bordered table-striped table-responsive d-lg-table w-100">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Id</th>
+            <th>User Name</th>
+            <th>Exam Subject</th>
+            <th>Total Marks</th>
+            <th>Gained Marks</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+</table>
+
+@section scripts{ 
+
+<script>
+    var rowData;
+
+    var table = $('#exams-dt').DataTable({
+        dom: 'Bfrtip',
+        columnDefs: [
+            {
+                orderable: false,
+                className: 'select-checkbox',
+                targets: 0
+            },
+            {
+                visible: false,
+                targets: [1]
+            }
+        ],
+        select: {
+            style: 'os',
+            selector: 'td:first-child'
+        },
+        buttons: {
+            buttons: [
+                {
+                    text: '<i class="fa fa-plus mr-2"></i>Add New',
+                    className: 'btn-primary',
+                    action: function (e, dt, node, config) {
+                        Add();
+                    }
+                },
+                {
+                    text: '<i class="fa fa-edit mr-2"></i>Edit',
+                    className: 'btn-success',
+                    action: function (e, dt, node, config) {
+                        Edit();
+                    }
+                },
+                {
+                    text: '<i class="fas fa-trash-alt mr-2"></i>Delete',
+                    className: 'btn-danger',
+                    action: function (e, dt, node, config) {
+                        Delete();
+                    }
+                }
+            ],
+            dom: {
+                button: {
+                    className: 'btn btn-sm'
+                },
+                buttonLiner: {
+                    tag: null
+                }
+            }
+        },
+        "ajax": {
+            "url": '/Exams/Get',
+            "type": 'get'
+        },
+        "columns": [
+            { "data": "i" },
+            { "data": "id" },
+            { "data": "userName" },
+            { "data": "examSubject" },
+            { "data": "totalMarks" },
+            { "data": "gainedMarks" },
+            { "data": "examDate" }
+        ]
+    });
+
+    $('#exams-dt').on('click', 'tbody td:first-child', function () {
+
+        var row = $(this).closest('tr');
+
+        if (row.hasClass('selected')) {
+            row.removeClass('selected');
+            rowData = null;
+        }
+        else {
+            table.$('tr.selected').removeClass('selected');
+            row.addClass('selected');
+            rowData = table.row('.selected').data();
+        }
+    });
+
+    function Edit() {
+        if (rowData == null) {
+            swal("Error!", "No Row Selected!", "error");
+            return;
+        }
+
+        $('#SubjectId').val(rowData.subjectId);
+        $('#examsModal').modal('toggle');
+    }
+
+
+</script>
+
+}

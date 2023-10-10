@@ -1,0 +1,78 @@
+﻿@model PkHiveUI.Models.ContactViewModel
+@{
+    ViewData["Title"] = "Contact Us";
+    ViewData["url"] = "https://pkhive.com/contact";
+}
+
+<!-- Contact form-->
+<section id="contact" class="bg-light p-5">
+    <h1 class="text-center"><i class="bi bi-envelope-fill"></i></h1>
+    <h1 class="text-center">@ViewData["Title"]</h1><br />
+    <form asp-action="Contact" method="post" role="form" data-ajax="true" data-ajax-success="success">
+        <!-- Name input -->
+        <div class="form-floating mb-4">
+            <input asp-for="FullName" class="form-control shadow-none rounded-0 border border-0">
+            <label asp-for="FullName" class="form-label"></label>
+            <span asp-validation-for="FullName" class="text-danger"></span>
+        </div>
+
+        <!-- Email input -->
+        <div class="form-floating mb-4">
+            <input asp-for="Email" class="form-control shadow-none rounded-0 border border-0">
+            <label asp-for="Email" class="form-label"></label>
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <!-- Phone Number input -->
+        <div class="form-floating mb-4">
+            <input asp-for="PhoneNumber" class="form-control shadow-none rounded-0 border border-0">
+            <label asp-for="PhoneNumber" class="form-label"></label>
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+
+        <!-- Subject input -->
+        <div class="form-floating mb-4">
+            <input asp-for="Subject" class="form-control shadow-none rounded-0 border border-0">
+            <label asp-for="Subject" class="form-label"></label>
+            <span asp-validation-for="Subject" class="text-danger"></span>
+        </div>
+
+        <!-- Message input -->
+        <div class="form-floating mb-4">
+            <textarea asp-for="Message" class="form-control shadow-none rounded-0 border border-0" rows="5" style="height:25%"></textarea>
+            <label asp-for="Message" class="form-label"></label>
+            <span asp-validation-for="Message" class="text-danger"></span>
+        </div>
+        <div class="text-center">
+            <div class="g-recaptcha text-center" data-sitekey="6LdwU0UjAAAAABDY8roQKqkEc-j5mQj0FG8GSucl"></div>
+            <br />
+            <!-- Submit button -->
+            <input type="submit" class="btn mb-4 bg-primary text-white" value="Send Message"/>
+        </div>
+    </form>
+</section>
+
+@section scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        function success(res) {
+            if (res.success) {
+                swal("Success!", "Thankyou for contacting with us!", "success");
+                $('#FullName').val('');
+                $('#FullName').trigger('change');
+                $('#PhoneNumber').val('');
+                $('#Email').val('');
+                $('#Subject').val('');
+                $('#Message').val('');
+                $('.loading').removeClass('d-block');
+            }
+            else {
+                swal("Error!", "Something went wrong!", "error");
+            }
+        }
+
+    </script>
+    }

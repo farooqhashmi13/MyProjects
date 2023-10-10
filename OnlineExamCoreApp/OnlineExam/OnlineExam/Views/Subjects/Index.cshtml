@@ -1,0 +1,203 @@
+﻿
+@{
+    ViewData["Title"] = "Subjects";
+    Layout = "_LayoutAdmin";
+}
+
+<br />
+
+<h3>Subjects</h3>
+<hr />
+
+<!-- Modal -->
+<div class="modal fade" id="subjectsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="SubjectId" />
+                <label for="SubjectName">Subject Name</label>
+                <input type="text" class="form-control" id="SubjectName" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-save">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<table id="subjects-dt" class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Id</th>
+            <th>Name</th>
+        </tr>
+    </thead>
+</table>
+
+@section scripts{
+    <script type="text/javascript">
+        var rowData;
+
+        var table = $('#subjects-dt').DataTable({
+            dom: 'Bfrtip',
+            columnDefs: [
+                {
+                    orderable: false,
+                    className: 'select-checkbox',
+                    targets: 0
+                },
+                {
+                    visible: false,
+                    targets: [1]
+                }
+            ],
+            select: {
+                style: 'os',
+                selector: 'td:first-child'
+            },
+            buttons: {
+                buttons: [
+                    {
+                        text: '<i class="fa fa-plus mr-2"></i>Add New',
+                        className: 'btn-primary',
+                        action: function (e, dt, node, config) {
+                            Add();
+                        }
+                    },
+                    {
+                        text: '<i class="fa fa-edit mr-2"></i>Edit',
+                        className: 'btn-success',
+                        action: function (e, dt, node, config) {
+                            Edit();
+                        }
+                    },
+                    {
+                        text: '<i class="fas fa-trash-alt mr-2"></i>Delete',
+                        className: 'btn-danger',
+                        action: function (e, dt, node, config) {
+                            Delete();
+                        }
+                    }
+                ],
+                dom: {
+                    button: {
+                        className: 'btn btn-sm'
+                    },
+                    buttonLiner: {
+                        tag: null
+                    }
+                }
+            },
+            "ajax": {
+                "url": '/Subjects/Get',
+                "type": 'get'
+            },
+            "columns": [
+                { "data": "i" },
+                { "data": "id" },
+                { "data": "name" }
+            ]
+        });
+
+        $('#subjects-dt').on('click', 'tbody td:first-child', function () {
+
+            var row = $(this).closest('tr');
+
+            if (row.hasClass('selected')) {
+                row.removeClass('selected');
+                rowData = null;
+            }
+            else {
+                table.$('tr.selected').removeClass('selected');
+                row.addClass('selected');
+                rowData = table.row('.selected').data();
+            }
+        });
+
+        function Add() {
+            $('#subjectsModal').modal('toggle');
+        }
+        function Edit() {
+            if (rowData == null) {
+                swal("Error!", "No Row Selected!", "error");
+                return;
+            }
+
+            $('#SubjectId').val(rowData.id);
+            $('#SubjectName').val(rowData.name);
+
+            $('#subjectsModal').modal('toggle');
+        }
+        function Delete() {
+            if (rowData == null) {
+                swal("Error!", "No Row Selected!", "error");
+                return;
+            }
+
+            swal({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover this row!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            url: '/Subjects/Delete',
+                            method: 'delete',
+                            data: { Id: rowData.id },
+                            success: function (res) {
+                                swal("Selected row has been deleted!", {
+                                    icon: "success",
+                                });
+                                rowData = null;
+                                table.ajax.reload();
+                            }
+                        });
+                    }
+                });
+        }
+
+        $('.btn-save').on('click', function () {
+
+            var obj = {
+                id: $('#SubjectId').val(),
+                name: $('#SubjectName').val()
+            };
+
+            $.ajax({
+                url: '/Subjects/Save',
+                method: 'post',
+                data: obj,
+                success: function (res) {
+                    if (res.success) {
+                        $('#subjectsModal').modal('toggle');
+                        swal("Success!", "Data Saved Successfully!", "success");
+                        table.ajax.reload();
+                    }
+                    else {
+                        swal("Error!", res.message, "error");
+                    }
+                }
+            });
+
+        });
+
+        $('#subjectsModal').on('hidden.bs.modal', function () {
+            $('#SubjectId').val('');
+            $('#SubjectName').val('');
+        });
+
+
+
+    </script>
+}

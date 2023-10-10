@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="MedicalApp.UserControls.Product_UserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MedicalApp.UserControls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d"
+             Loaded="UserControl_Loaded">
+    <StackPanel Margin="10 0">
+
+        <Grid Margin="10 30">
+            <StackPanel Orientation="Horizontal">
+
+                <materialDesign:PackIcon Kind="Store" Width="20" Height="20" Margin="5" VerticalAlignment="Center"/>
+                <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}" Text="Products" />
+            </StackPanel>
+        </Grid>
+
+        <Grid Margin="10 30">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" x:Name="btnAddProduct" Click="btnAddProduct_Click">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="Plus" Width="20" Height="20" Margin="5" VerticalAlignment="Center"/>
+                    <TextBlock Text="Add New" VerticalAlignment="Center"></TextBlock>
+                </StackPanel>
+            </Button>
+            <Grid Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="Search" VerticalAlignment="Center" FontSize="16" Margin="0 0 5 0" HorizontalAlignment="Right"></TextBlock>
+                <TextBox Grid.Column="1" Style="{StaticResource MaterialDesignOutlinedTextBox}" AcceptsReturn="True"
+                     TextWrapping="Wrap" materialDesign:HintAssist.Hint="Search" Padding="10 5"/>
+            </Grid>
+        </Grid>
+
+
+        <DataGrid Grid.Row="1" x:Name="product_datagrid" FontSize="16">
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="1*" Header="Product Id" Binding="{Binding Id}" Visibility="Hidden"/>
+                <DataGridTextColumn Width="1*" Header="Product Name" Binding="{Binding ProductName}"/>
+                <DataGridTextColumn Width="1*" Header="Buy Price" Binding="{Binding BuyPrice}"/>
+                <DataGridTextColumn Width="1*" Header="Sell Price" Binding="{Binding SellPrice}"/>
+                <DataGridTextColumn Width="1*" Header="Stock" Binding="{Binding Stock}"/>
+                <DataGridTextColumn Width="1*" Header="Expiration Date" Binding="{Binding ExpDate}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </StackPanel>
+
+</UserControl>

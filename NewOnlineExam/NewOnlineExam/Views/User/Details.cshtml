@@ -1,0 +1,34 @@
+﻿@model IEnumerable<NewOnlineExam.Controllers.TestDetailsViewModel>
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+    <a class="btn btn-default" href="@Url.Action("", "managetest")"><i class="fas fa-angle-left"></i> Back To List</a><br /><br />
+
+@foreach (var testQuestion in Model)
+{
+    <strong>Q#@testQuestion.QuestionNo: @testQuestion.Question</strong>
+    <ul class="list-group">
+        @foreach (var option in testQuestion.Options)
+        {
+            if (testQuestion.IsCorrect)
+            {
+                <li class="list-group-item @(option.IsAnswer ? "list-group-item-success" : "")">@option.Option</li>
+            }
+            else
+            {
+                if (option.Id != testQuestion.SeletedOptionId)
+                {
+                    <li class="list-group-item @(option.IsAnswer ? "list-group-item-success" : "")">@option.Option</li>
+                }
+                else
+                {
+                    <li class="list-group-item list-group-item-danger">@option.Option</li>
+                }
+            }
+        }
+    </ul>
+    <br />
+}

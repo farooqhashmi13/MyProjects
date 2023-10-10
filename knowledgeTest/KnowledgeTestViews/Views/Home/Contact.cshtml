@@ -1,0 +1,46 @@
+﻿<!-- Jumbotron -->
+<div id="intro" class="p-5 text-white shadow-5 rounded-5 mb-5"
+     style="background: linear-gradient(
+            45deg,
+            rgba(29, 236, 197, 0.7),
+            rgba(91, 14, 214, 0.7) 100%);">
+    <h1>Contact Us</h1>
+    @*<a class="btn btn-outline-white btn-lg m-2" href="@Url.Action("Index", "Exam")" role="button">Start the test</a>*@
+</div>
+<!-- Jumbotron -->
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-success" role="alert">
+        @ViewBag.Message
+    </div>
+}
+
+<form method="post" action="/contact">
+    <!-- Name input -->
+    <div class="form-outline mb-4">
+        <input type="text" id="form4Example1" class="form-control" required/>
+        <label class="form-label" for="form4Example1">Name</label>
+    </div>
+
+    <!-- Email input -->
+    <div class="form-outline mb-4">
+        <input type="email" id="form4Example2" class="form-control" required/>
+        <label class="form-label" for="form4Example2">Email address</label>
+    </div>
+
+    <!-- Email input -->
+    <div class="form-outline mb-4">
+        <input type="email" id="form4Example2" class="form-control" required/>
+        <label class="form-label" for="form4Example2">Subject</label>
+    </div>
+
+    <!-- Message input -->
+    <div class="form-outline mb-4">
+        <textarea class="form-control" id="form4Example3" rows="4" required></textarea>
+        <label class="form-label" for="form4Example3">Message</label>
+    </div>
+
+    <!-- Submit button -->
+    <button type="submit" class="btn btn-primary btn-block mb-4">Send</button>
+</form>

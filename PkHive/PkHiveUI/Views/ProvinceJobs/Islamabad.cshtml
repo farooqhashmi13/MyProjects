@@ -1,0 +1,176 @@
+﻿@model IEnumerable<PkHiveLibrary.Models.Job>
+
+@{
+    ViewData["Title"] = "Latest govt jobs in Islamabad, Job Vacancies and Career Opportunities";
+    ViewData["Description"] = "Govt Jobs in Islamabad, vacancies, and notifications for all government departments in Islamabad. Find out the latest jobs, and employment opportunities in Islamabad.";
+    ViewData["KeyWord"] = "govt jobs in islamabad";
+    ViewData["url"] = "https://pkhive.com/jobs-in-islamabad";
+    ViewData["url-img"] = "https://pkhive.com/og-img/og-image.png";
+    int i = 1;
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p class="fs-5">
+    Govt jobs in Islamabad are often announced by several different government institutions. These institutions include FIA, FBR, NADRA, SNGPL, WAPDA and other federal base departments. Candidates from all over the Pakistan can apply for these jobs.
+</p>
+
+<p><a href="#jobs" class="fs-5">Click here for jobs list</a></p>
+
+<p class="fs-5">
+    Pakistan is the 5th most populated country in the world. Islamabad is the capital city of Pakistan. Unemployment is one of the biggest issues, Pakistan is facing today.
+</p>
+<p class="fs-5">
+    According to the Pakistan Economic Survey 2021-22
+    <ul>
+        <li class="fs-5">The total unemployed population is 57.9%.</li>
+        <li class="fs-5">The male unemployed population is 35.9%.</li>
+        <li class="fs-5">The female unemployed population is 80.6%.</li>
+    </ul>
+</p>
+
+<section id="jobs">
+    @if (Model.Count() == 0)
+    {
+        <p class="fs-5 mt-5 fw-bold">No jobs available.</p>
+        <p class="fs-5 mt-5">For related jobs information. Click <a href="/">here</a></p>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped caption-top">
+                <caption><h3><strong>Jobs List</strong></h3></caption>
+                <thead>
+                    <tr>
+                        <th>Job Title</th>
+                        <th>Vacancies</th>
+                        <th>Last Date</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Title</td>
+                            <td>@item.Vacancies</td>
+                            <td>@item.LastDate.ToString("dd-MMM-yyyy")</td>
+                            <td class="text-center">
+                                <button class="btn btn-sm bg-primary text-white rounded-5 btn-jobinfo"
+                                data-vacancies="@item.Vacancies"
+                                data-department="@item.Department"
+                                data-posteddate="@item.PostedDate.ToString("dd-MMM-yyyy")"
+                                data-lastdate="@item.LastDate.ToString("dd-MMM-yyyy")"
+                                data-qualifications="@item.Qualification"
+                                data-experience="@item.Experience"
+                                data-payscale="@item.PayScale"
+                                data-description="@item.Description"
+                                data-applylink="@item.ApplyLink"
+                                title="Job Details">
+                                    <i class="bi bi-list"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</section>
+
+<div class="modal fade" id="job-modal" tabindex="-1" aria-labelledby="job-modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="job-modalLabel">Job Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <dl>
+                    <dt>Department</dt>
+                    <dd id="dd-department"></dd>
+                    <dt>Vacancies</dt>
+                    <dd id="dd-vacancies"></dd>
+                    <dt>Posted Date</dt>
+                    <dd id="dd-posteddate"></dd>
+                    <dt>Last Date</dt>
+                    <dd id="dd-lastdate"></dd>
+                    <dt>Pay Scale</dt>
+                    <dd id="dd-payscale"></dd>
+                    <dt>Qualifications</dt>
+                    <dd id="dd-qualifications"></dd>
+                    <dt>Experience</dt>
+                    <dd id="dd-experience"></dd>
+                    <dt>Description</dt>
+                    <dd id="dd-description"></dd>
+                </dl>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <a href="#" class="btn btn-primary btn-apply" target="_blank">Apply Now</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $('.btn-jobinfo').on('click', function() {
+            $('#dd-payscale').text($(this).data('payscale'));
+            $('#dd-vacancies').text($(this).data('vacancies'));
+            $('#dd-department').text($(this).data('department'));
+            $('#dd-experience').text($(this).data('experience'));
+            $('#dd-qualifications').text($(this).data('qualifications'));
+            $('#dd-posteddate').text($(this).data('posteddate'));
+            $('#dd-lastdate').text($(this).data('lastdate'));
+            $('#dd-description').text($(this).data('description'));
+            $('.btn-apply').attr('href', $(this).data('applylink'));
+            $("#job-modal").modal("toggle");
+        });
+    </script>
+
+        @foreach (var item in Model)
+    {
+        <script type="application/ld+json">
+            {
+              "@@context" : "https://schema.org/",
+              "@@type" : "JobPosting",
+              "title" : "@item.Title",
+              "description" : "<p>@item.Description</p>",
+              "identifier": {
+                "@@type": "PropertyValue",
+                "name": "pkhive.com",
+                "value": "@item.Id"
+              },
+              "datePosted" : "@item.PostedDate.ToString("yyyy-MM-dd")",
+              "validThrough" : "@item.PostedDate.ToString("yyyy-MM-ddThh:mm")",
+              "employmentType" : "FULL_TIME",
+              "hiringOrganization" : {
+                "@@type" : "Organization",
+                "name" : "@item.Type.Name",
+                "sameAs" : "@item.Type.Name"
+              },
+              "jobLocation": {
+              "@@type": "Place",
+                "address": {
+                "@@type": "PostalAddress",
+                "addressLocality": "Islamabad",
+                "addressRegion": "Islamabad",
+                "postalCode": "46000",
+                "addressCountry": "Pakistan"
+                }
+              },
+              "baseSalary": {
+                "@@type": "MonetaryAmount",
+                "currency": "PKR",
+                 "value": {
+                  "@@type": "QuantitativeValue",
+                  "minValue": "@item.MinSalary",
+                  "maxValue": "@item.MaxSalary",
+                  "unitText": "Monthly"
+                }
+              }
+            }
+        </script>
+    }
+}

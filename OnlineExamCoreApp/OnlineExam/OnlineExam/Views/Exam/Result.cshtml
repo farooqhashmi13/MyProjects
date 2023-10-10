@@ -1,0 +1,22 @@
+﻿@model OnlineExam.Models.ViewModels.ResultViewModel
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+    <div class="card border-info">
+        <div class="card-body">
+            <h3>Result</h3>
+            <hr />
+            <p>User Name:<span class="float-right">@Model.UserName</span></p>
+            <p>Email:<span class="float-right">@Model.Email</span></p>
+            <p>Exam Date:<span class="float-right">@Model.Date</span></p>
+            <p>Exam Subject:<span class="float-right"> @Model.Subject</span></p>
+            <p>Gained Marks:<span class="float-right">@Model.GainedMarks</span></p>
+            <p>Total Marks:<span class="float-right">@Model.TotalMarks</span></p>
+        </div>
+    </div>
+    </div>
+</div>

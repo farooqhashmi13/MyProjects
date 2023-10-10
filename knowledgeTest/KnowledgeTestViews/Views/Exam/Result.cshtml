@@ -1,0 +1,190 @@
+﻿@model KnowledgeTestLibrary.Models.Test
+@{
+    var per = 0.0f;
+    var gainedMarks = (float)Model.GainedMarkes;
+    var totalMarks = (float)Model.TotalMarks;
+    per = (gainedMarks / totalMarks) * 100;
+}
+<style>
+    .tab {
+        display: none;
+    }
+
+    .page-item.active .page-link {
+        background-color: rgba(0,0,0,0.5);
+    }
+
+</style>
+<br />
+<section>
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="card shadow-none border rounded-0 text-center fs-4">
+                <div class="card-body">
+                    @if (per >= 70)
+                    {
+                        <p><i class="fa-solid fa-circle-check fa-2x text-success"></i></p>
+                        <p>Good work!</p>
+                        <p>You got <strong>@per%</strong> right</p>
+                    }
+                    else
+                    {
+                        <p><i class="fa-solid fa-circle-exclamation fa-2x text-danger"></i></p>
+                        <p>Sorry!</p>
+                        <p>You got less than <strong>70%</strong> right</p>
+                    }
+                    <p>Time taken <strong>@Model.TimeTaken</strong></p>
+                </div>
+            </div>
+            <div class="text-center">
+                <button class="btn btn-link btn-show">Show Answers</button>
+            </div>
+        </div>
+    </div>
+</section>
+<br />
+<section id="section-questions">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="card border shadow-none rounded-0 card-test">
+                @foreach (var question in Model.TestQuestions)
+                {
+                    <div class="tab">
+                        <div class="card-header">
+                            <strong>Q#1: @question.Question.Statement</strong> @(question.SelectedOption == 0 ? Html.Raw("<span class=\"badge badge-danger\">Not Answered</span>") : "")
+                        </div>
+                        <div class="card-body">
+                            <ol type="A" class="d-grid">
+                                @for (int x = 0; x < 4; x++)
+                                {
+                                    if (question.SelectedOption == question.Question.Options[x].Id)
+                                    {
+                                        if (question.Question.Options[x].IsAnswer)
+                                        {
+                                            <li class="mb-2 bg-light text-start p-3 text-uppercase">
+                                                <span class="badge badge-success mb-2"><i class="fa-solid fa-check me-2"></i>Right</span><br />
+                                                @question.Question.Options[x].Statement
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li class="mb-2 bg-light text-start p-3 text-uppercase">
+                                                <span class="badge badge-danger mb-2"><i class="fa-solid fa-xmark me-2"></i>Wrong</span><br />
+                                                @question.Question.Options[x].Statement
+                                            </li>
+                                        }
+                                    }
+                                    else if (question.Question.Options[x].IsAnswer)
+                                    {
+                                        <li class="mb-2 bg-light text-start p-3 text-uppercase">
+                                            <span class="badge badge-success mb-2"><i class="fa-solid fa-check me-2"></i>Right</span><br />
+                                            @question.Question.Options[x].Statement
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="mb-2 bg-light text-start p-3 text-uppercase">
+                                            @question.Question.Options[x].Statement
+                                        </li>
+                                    }
+                                }
+                            </ol>
+                        </div>
+                    </div>
+                }
+                <div class="card-footer text-center">
+                    <button class="btn btn-link float-start shadow-none" type="button" id="prevBtn" onclick="nextPrev(-1)"><i class="fa fa-arrow-left" aria-hidden="true"></i> Previous</button>
+                    <span class="text-lg-center"><strong><span id="q-count">1</span>/@Model.TestQuestions.Count()</strong></span>
+                    <button class="btn btn-link float-end shadow-none" type="button" id="nextBtn" onclick="nextPrev(1)">Next <i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+                </div>
+            </div>
+            <br />
+            <ul class="pagination justify-content-center gap-2 flex-wrap">
+                @for (int i = 0; i < @Model.TestQuestions.Count(); i++)
+                {
+                    <li class="page-item"><button class="btn btn-sm page-link" onclick="pageLink(@i)">@(i+1)</button></li>
+                }
+            </ul>
+        </div>
+    </div>
+
+</section>
+
+@section scripts{
+
+    <script>
+        $('#section-questions').hide();
+        var currentTab = 0;
+        showTab(currentTab);
+        fixStepIndicator(currentTab);
+
+        function showTab(n) {
+
+            var x = document.getElementsByClassName("tab");
+
+            $('#q-count').text(n + 1);
+            x[n].style.display = "block";
+
+            if (n == 0) {
+                $("#prevBtn").prop('disabled', true);
+            } else {
+                $("#prevBtn").prop('disabled', false);
+            }
+            if (n == (x.length - 1)) {
+                $("#nextBtn").prop('disabled', true);
+            } else {
+                $("#nextBtn").prop('disabled', false);
+            }
+            fixStepIndicator(n);
+        }
+
+        function nextPrev(n) {
+
+            var x = document.getElementsByClassName("tab");
+
+            if (n >= x.length) {
+                return false;
+            }
+
+            x[currentTab].style.display = "none";
+
+            currentTab = currentTab + n;
+
+            showTab(currentTab);
+        }
+
+        function pageLink(n) {
+
+            var x = document.getElementsByClassName("tab");
+
+            if (n >= x.length) {
+                return false;
+            }
+
+            x[currentTab].style.display = "none";
+
+            currentTab = n;
+
+            showTab(currentTab);
+        }
+
+        function fixStepIndicator(n) {
+
+            var x = $('.page-item');
+
+            for (i = 0; i < x.length; i++) {
+                $(x[i]).removeClass('active');
+            }
+
+            $(x[n]).addClass('active');
+
+        }
+
+        $('.btn-show').on('click', function() {
+            $('#section-questions').show();
+        });
+
+    </script>
+}

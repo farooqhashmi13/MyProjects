@@ -1,0 +1,57 @@
+﻿@model Online_Exam.Models.Test
+@{
+    ViewBag.Title = "ShowResult";
+}
+
+<style>
+    h1.fa.fa-user-circle {
+        font-size: 85px;
+    }
+</style>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-primary" style="text-align:center;color:white">
+                    <h1 class="fa fa-user-circle"></h1>
+                    <h1>Farooq Hashmi</h1>
+                </div>
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted">@DateTime.Now.ToString("dd MMM yyyy")</h6>
+                    <h4 class="card-title">Obtained Marks <strong>67/100</strong></h4>
+                    <h4 class="card-title">Nts Test <strong>Computer Science</strong></h4>
+                    <hr />
+                    <p>
+                        <a href="#" class="card-link fa fa-facebook"> Share</a>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="#" style="align-self:center">www.google.com</a>
+                        <a href="#" class="card-link fa fa-twitter" style="float:right"> Share</a>
+
+                    </p>
+                </div>
+
+            </div>
+            @*<ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Score:-
+                        <span class="badge badge-primary badge-pill">@Model.Score</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Date:-
+                        <span class="badge badge-primary badge-pill">@Model.TestDateTime.Value.ToString("d MMM yyyy")</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Time:-
+                        <span class="badge badge-primary badge-pill">@Model.TestDateTime.Value.ToString("hh:mm tt")</span>
+                    </li>
+                </ul>*@
+        </div>
+        <div class="col-md-4">
+
+        </div>
+    </div>
+</div>
+

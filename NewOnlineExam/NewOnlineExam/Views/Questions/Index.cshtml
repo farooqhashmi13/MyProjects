@@ -1,0 +1,448 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="wrapper-editor">
+    <div class="row mb-5">
+        <div class="col-md-4">
+            <p>Select Category</p>
+            <select class="form-control" id="subCatId" name="subCatId">
+                @foreach (var subCat in ViewBag.subCat)
+                {
+                    <option value="@subCat.Id">@subCat.Name</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="row d-flex justify-content-center modalWrapper">
+        <div class="modal fade addNewInputs" id="modalAdd" tabindex="-1" role="dialog" aria-labelledby="modalAdd"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header text-center">
+                        <h4 class="modal-title w-100 font-weight-bold text-primary ml-5">Add new form</h4>
+                        <button type="button" class="close text-primary" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body mx-3">
+                        <div class="md-form mb-5">
+                            <input type="text" id="txt-question" class="form-control validate">
+                            <label data-error="wrong" data-success="right" for="txt-question">Question</label>
+                        </div>
+                        <input type="hidden" id="questionId" />
+                        <input type="hidden" id="option1-Id" />
+                        <input type="hidden" id="option2-Id" />
+                        <input type="hidden" id="option3-Id" />
+                        <input type="hidden" id="option4-Id" />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="md-form mb-5 mt-2">
+                                    <input type="text" id="txt-option1" class="form-control validate">
+                                    <label data-error="wrong" data-success="right" for="txt-option1">Option1</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="option1-radio">Is Answer</label><br />
+                                <input type="radio" id="option1-radio" name="option-radio">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="md-form mb-5 mt-2">
+                                    <input type="text" id="txt-option2" class="form-control validate">
+                                    <label data-error="wrong" data-success="right" for="txt-option2">Option2</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="option2-radio">Is Answer</label><br />
+                                <input type="radio" id="option2-radio" name="option-radio">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="md-form mb-5 mt-2">
+                                    <input type="text" id="txt-option3" class="form-control validate">
+                                    <label data-error="wrong" data-success="right" for="txt-option3">Option3</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="option3-radio">Is Answer</label><br />
+                                <input type="radio" id="option3-radio" name="option-radio">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="md-form mb-5 mt-2">
+                                    <input type="text" id="txt-option4" class="form-control validate">
+                                    <label data-error="wrong" data-success="right" for="txt-option4">Option4</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="option4-radio">Is Answer</label><br />
+                                <input type="radio" id="option4-radio" name="option-radio">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center buttonAddFormWrapper">
+                        <button class="btn btn-outline-primary btn-block buttonAdd" id="btnSave" data-dismiss="modal">
+                            Save
+                            <i class="fas fa-paper-plane ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <a href="" class="btn btn-info btn-rounded btn-sm btnAdd" data-toggle="modal" data-target="#modalAdd">
+                Add<i class="fas fa-plus-square ml-1"></i>
+            </a>
+        </div>
+
+        <div class="text-center buttonEditWrapper">
+            <button class="btn btn-info btn-rounded btn-sm buttonEdit" data-toggle="modal" data-target="#modalAdd"
+                    disabled>
+                Edit<i class="fas fa-edit ml-1"></i>
+            </button>
+        </div>
+
+        <div class="text-center">
+            <button class="btn btn-danger btn-sm btn-rounded buttonDelete" data-toggle="modal" disabled data-target="#modalDelete">
+                Delete<i class="fas fa-times ml-1"></i>
+            </button>
+        </div>
+
+        <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="modalDelete"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header text-center">
+                        <h4 class="modal-title w-100 font-weight-bold ml-5 text-danger">Delete</h4>
+                        <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body mx-3">
+                        <p class="text-center h4">Are you sure to delete this row?</p>
+                        <input id="question-d" type="text" disabled class="form-control" />
+                        <input id="option0-d" type="text" disabled class="form-control" />
+                        <input id="option1-d" type="text" disabled class="form-control" />
+                        <input id="option2-d" type="text" disabled class="form-control" />
+                        <input id="option3-d" type="text" disabled class="form-control" />
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center deleteButtonsWrapper">
+                        <button type="button" class="btn btn-danger btnYesClass" id="btnYes" data-dismiss="modal">Yes</button>
+                        <button type="button" class="btn btn-primary btnNoClass" id="btnNo" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive-lg table-hover">
+        <table id="dt-basic-checkbox" class="table bg-white" width="100%">
+            <thead>
+                <tr>
+                    <th class="th-sm"></th>
+                    <th class="th-sm">
+                        Question
+                    </th>
+                    <th class="th-sm">
+                        Option1
+                    </th>
+                    <th class="th-sm">
+                        Option2
+                    </th>
+                    <th class="th-sm">
+                        Option3
+                    </th>
+                    <th class="th-sm">
+                        Option4
+                    </th>
+                </tr>
+            </thead>
+        </table>
+        <div></div>
+
+
+
+        <div id="snackbar">
+            <i style="display:none" id="icon-success" class="fas fa-check text-success"> Succeeded..</i>
+            <i style="display:none" id="icon-danger" class="fas fa-exclamation-triangle text-danger"> Something went wrong..</i>
+        </div>
+    </div>
+
+    @section scripts
+{
+        <script type="text/javascript">
+
+            var rowData;
+
+            var table = $('#dt-basic-checkbox').dataTable({
+
+                columnDefs: [
+                    {
+                        orderable: false,
+                        className: 'select-checkbox',
+                        targets: 0
+                    }
+                ],
+                select: {
+                    style: 'os',
+                    selector: 'td:first-child'
+                },
+
+                "ajax": {
+                    "url": '/Questions/GetData',
+                    "type": 'post',
+                    "data": function (d) {
+                        d.Id = $("#subCatId option:selected").val();
+                    },
+                },
+                "columns": [
+                    { "data": "i" },
+                    { "data": "Questions.Question" },
+                    {
+                        "data": "Options.0",
+                        render: function (option) {
+                            if (option.IsAnswer) {
+                                return ' <i class="fas fa-check"></i> ' + option.Option;
+                            }
+                            else {
+                                return option.Option;
+                            }
+                        }
+                    },
+                    {
+                        "data": "Options.1",
+                        render: function (option) {
+                            if (option.IsAnswer) {
+                                return ' <i class="fas fa-check"></i> ' + option.Option;
+                            }
+                            else {
+                                return option.Option;
+                            }
+                        }
+                    },
+                    {
+                        "data": "Options.2",
+                        render: function (option) {
+                            if (option.IsAnswer) {
+                                return ' <i class="fas fa-check"></i> ' + option.Option;
+                            }
+                            else {
+                                return option.Option;
+                            }
+                        }
+                    },
+                    {
+                        "data": "Options.3",
+                        render: function (option) {
+                            if (option.IsAnswer) {
+                                return ' <i class="fas fa-check"></i> ' + option.Option;
+                            }
+                            else {
+                                return option.Option;
+                            }
+                        }
+                    }
+                ]
+            });
+
+            $('#dt-basic-checkbox').on('click', 'tbody td:first-child', function () {
+
+                var row = this.closest('tr');
+
+                rowData = $('#dt-basic-checkbox').DataTable().row($(this).parents('tr')).data();
+
+                if ($(row).hasClass('selected')) {
+                    $('.buttonEdit').prop('disabled', true);
+                    $('.buttonDelete').prop('disabled', true);
+                }
+                else {
+                    $('.buttonEdit').prop('disabled', false);
+                    $('.buttonDelete').prop('disabled', false);
+                }
+
+            });
+
+            $('.btnAdd').on('click', function () {
+                $('#option1-radio').prop('checked', false);
+                $('#option2-radio').prop('checked', false);
+                $('#option3-radio').prop('checked', false);
+                $('#option4-radio').prop('checked', false);
+                $('#questionId').val('').trigger('change');
+                $('#option2-Id').val('').trigger('change');
+                $('#option3-Id').val('').trigger('change');
+                $('#option4-Id').val('').trigger('change');
+                $('#option1-Id').val('').trigger('change');
+                $('#txt-question').val('').trigger('change');
+                $('#txt-option1').val('').trigger('change');
+                $('#txt-option2').val('').trigger('change');
+                $('#txt-option3').val('').trigger('change');
+                $('#txt-option4').val('').trigger('change');
+            });
+
+            $('.buttonEdit').on('click', function () {
+
+                $('#questionId').val(rowData.Questions.Id).trigger('change');
+                $('#option1-Id').val(rowData.Options[0].Id).trigger('change');
+                $('#option2-Id').val(rowData.Options[1].Id).trigger('change');
+                $('#option3-Id').val(rowData.Options[2].Id).trigger('change');
+                $('#option4-Id').val(rowData.Options[3].Id).trigger('change');
+                $('#option1-radio').prop('checked', rowData.Options[0].IsAnswer);
+                $('#option2-radio').prop('checked', rowData.Options[1].IsAnswer);
+                $('#option3-radio').prop('checked', rowData.Options[2].IsAnswer);
+                $('#option4-radio').prop('checked', rowData.Options[3].IsAnswer);
+                $('#txt-question').val(rowData.Questions.Question).trigger('change');
+                $('#txt-option1').val(rowData.Options[0].Option).trigger('change');
+                $('#txt-option2').val(rowData.Options[1].Option).trigger('change');
+                $('#txt-option3').val(rowData.Options[2].Option).trigger('change');
+                $('#txt-option4').val(rowData.Options[3].Option).trigger('change');
+
+                //$('#formNameEdit').val(row.cells[2].textContent).trigger('change');
+                //$('#formPositionEdit').val(row.cells[3].textContent).trigger('change');
+            });
+
+            $('.buttonDelete').on('click', function () {
+                $('#question-d').val(rowData.Questions.Question);
+                $('#option0-d').val(rowData.Options[0].Option);
+                $('#option1-d').val(rowData.Options[1].Option);
+                $('#option2-d').val(rowData.Options[2].Option);
+                $('#option3-d').val(rowData.Options[3].Option);
+
+                if (rowData.Options[0].IsAnswer) {
+                    $('#option0-d').css('border-color', 'Green');
+                }
+                else {
+                    $('#option0-d').css('border-color', '#ccc');
+                }
+
+                if (rowData.Options[1].IsAnswer) {
+                    $('#option1-d').css('border-color', 'Green');
+                }
+                else {
+                    $('#option1-d').css('border-color', '#ccc');
+                }
+
+                if (rowData.Options[2].IsAnswer) {
+                    $('#option2-d').css('border-color', 'Green');
+                }
+                else {
+                    $('#option2-d').css('border-color', '#ccc');
+                }
+
+                if (rowData.Options[3].IsAnswer) {
+                    $('#option3-d').css('border-color', 'Green');
+                }
+                else {
+                    $('#option3-d').css('border-color', '#ccc');
+                }
+
+            });
+
+            $('#btnYes').on('click', function () {
+                $.ajax({
+                    url: '/Questions/DeleteData',
+                    type: 'POST',
+                    data: { Id: rowData.Questions.Id },
+                    dataType: 'json',
+                    success: function (obj) {
+                        if (obj.success) {
+                            var x = document.getElementById("snackbar");
+                            x.className = "show";
+                            $('#icon-danger').hide();
+                            $('#icon-success').show();
+                            setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+                            $('#dt-basic-checkbox').DataTable().ajax.reload();
+                            $('.buttonDelete').prop('disabled', true);
+                            $('.buttonEdit').prop('disabled', true);
+                        }
+                        else {
+                            var x = document.getElementById("snackbar");
+                            x.className = "show";
+                            $('#icon-success').hide();
+                            $('#icon-danger').show();
+                            setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+                        }
+                    }
+                });
+            });
+
+            $("#subCatId").change(function () {
+                $('#dt-basic-checkbox').DataTable().ajax.reload();
+            });
+
+            $('#btnSave').on('click', function () {
+
+                var obj = {
+                    Questions: {
+                        "Id": $('#questionId').val(),
+                        "Question": $('#txt-question').val(),
+                        "CategoryId": $("#subCatId option:selected").val()
+                    },
+                    Options: [
+                        {
+                            "Id": $('#option1-Id').val(),
+                            "Option": $('#txt-option1').val(),
+                            "IsAnswer": $('#option1-radio').prop('checked'),
+                            "QuestionId": $('#questionId').val()
+                        },
+                        {
+                            "Id": $('#option2-Id').val(),
+                            "Option": $('#txt-option2').val(),
+                            "IsAnswer": $('#option2-radio').prop('checked'),
+                            "QuestionId": $('#questionId').val()
+                        },
+                        {
+                            "Id": $('#option3-Id').val(),
+                            "Option": $('#txt-option3').val(),
+                            "IsAnswer": $('#option3-radio').prop('checked'),
+                            "QuestionId": $('#questionId').val()
+                        },
+                        {
+                            "Id": $('#option4-Id').val(),
+                            "Option": $('#txt-option4').val(),
+                            "IsAnswer": $('#option4-radio').prop('checked'),
+                            "QuestionId": $('#questionId').val()
+                        }
+                    ]
+                }
+
+                $.ajax({
+                    url: '/Questions/SaveData',
+                    type: 'POST',
+                    data: obj,
+                    dataType: 'json',
+                    success: function (obj) {
+                        if (obj.success) {
+                            var x = document.getElementById("snackbar");
+                            x.className = "show";
+                            $('#icon-danger').hide();
+                            $('#icon-success').show();
+                            setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+                            $('#dt-basic-checkbox').DataTable().ajax.reload();
+                            $('.buttonDelete').prop('disabled', true);
+                            $('.buttonEdit').prop('disabled', true);
+                        }
+                        else {
+                            var x = document.getElementById("snackbar");
+                            x.className = "show";
+                            $('#icon-success').hide();
+                            $('#icon-danger').show();
+                            setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+                        }
+                    }
+                });
+
+            });
+
+        </script>
+    }

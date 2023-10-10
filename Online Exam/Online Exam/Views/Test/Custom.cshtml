@@ -1,0 +1,135 @@
+﻿@model PagedList.IPagedList<Online_Exam.Models.ViewModels.QuestionViewModel>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@{
+    ViewBag.Title = "Start Test";
+}
+
+<style>
+    .paging_link:active {
+        display: inline-block;
+        padding: 0 5px; /*top margin is 0px right margin is 5px bottom margin is --px left margin is --px*/
+    }
+</style>
+
+<div class="all-page-title">
+
+    <div class="container">
+
+        <div id="custom" class="text-center">
+            <h1>Custom Category</h1>
+        </div>
+        <input type="button" id="btnStartTest" class="btn btn-primary btn-lg aligncenter" value="Start Now" />
+
+    </div>
+</div>
+
+<div class="row m-2" id="mainContainer" style="display:none">
+    <div id="question-wrapper" class="col-md-8">
+        @Html.Partial("_partialViewQuestion", Model)
+    </div>
+    <div class="col-md-4 mt-3">
+        <div class="card">
+            <div class="card-body" style="background:white">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h4 class="card-title">Remaining Time:-</h4>
+                        <hr />
+                        <h6 class="card-subtitle mb-2">
+                            Remaining Questions:-
+                        </h6>
+                        <hr />
+                        <h6 class="card-subtitle mb-2">
+                            Question Answered:-
+                        </h6>
+                        <hr />
+
+                        <h6 class="card-subtitle mb-2">
+                            Right Answers:-
+                        </h6>
+                    </div>
+                    <div class="col-md-4">
+                        <h4 class="card-title"><span id="testTime"></span></h4>
+                        <hr />
+                        <h6 id="remainingQs" class="card-subtitle mb-2"></h6>
+                        <hr />
+                        <h6 id="answeredQs" class="card-subtitle mb-2"></h6>
+                        <hr />
+                        <h6 id="reightQs" class="card-subtitle mb-2"></h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<br />
+
+@section Scripts
+{
+    <script>
+
+        function Submit(radio) {
+            var name = $(radio).attr('name');
+            $(name).attr('disabled', true);
+            $("#answeredQs").text(parseInt($("#answeredQs").text()) + 1);
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("PostQuestion","Test")",
+                data: { //Passing data
+                    QuestionId: $("#txtQuestionId").val(), //Reading text box values using Jquery
+                    OptionId: $(radio).val(),
+                },
+                success: function (response) {
+                    if (response.success) {
+                        var ItemId = $(radio).parent().parent().attr('id');
+                        $("#" + ItemId).addClass("bg-success");
+                        $("#reightQs").text(parseInt($("#reightQs").text())+1)
+                    } else {
+                        var ItemId = $(radio).parent().parent().attr('id');
+                        $("#" + ItemId).addClass("bg-danger");                }
+                },
+                error: function (response) {
+                    alert("Some Thing Went Wrong!");
+                       }
+                   });
+                }
+
+        function Next() {
+            $("#remainingQs").text($("#txtRemainingQs").val());
+        }
+
+        function sTime() {
+            $("#remainingQs").text($("#txtTotalQuestions").val()-1);
+            $("#answeredQs").text(0);
+            $("#reightQs").text(0);
+
+
+            var time = new Date();
+            var countDownTime = time.setMinutes(time.getMinutes() + 120);
+            var x = setInterval(function () {
+                var now = new Date().getTime();
+                var distance = countDownTime - now;
+                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                document.getElementById("testTime").innerHTML = + hours + ":" + minutes + ":" + seconds;
+
+                if (distance < 0) {
+                    clearInterval(x);
+                    document.getElementById("testTime").innerHTML = "EXPIRED";
+                }
+            }, 1000);
+        }
+
+        $('#btnStartTest').click(function () {
+            $('#mainContainer').show();
+            sTime();
+        })
+
+    </script>
+}
+
+
+

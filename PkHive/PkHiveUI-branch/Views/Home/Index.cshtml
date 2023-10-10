@@ -1,0 +1,120 @@
+﻿
+@{
+    ViewData["Title"] = "pkhive.com";
+    ViewData["Description"] = "Pkhive is a wonderful website for job seekers. All job types can be found in one location for job searchers. For your convenien";
+    ViewData["url"] = "https://pkhive.com/";
+    ViewData["url-img"] = "https://pkhive.com/og-img/og-image.png";
+}
+
+<section id="jobs">
+    <div class="row gx-5">
+        <div class="col-lg-4 mb-5">
+            <div class="card h-100 shadow border-0">
+                <div class="card-body p-4">
+                    <div class="ms-2 me-auto">
+                        <a class="text-decoration-none link-dark stretched-link" href="nts-jobs">
+                            <div class="fw-bold h4">NTS Jobs</div>
+                            Jobs Available: @(ViewBag.nts != null ? ViewBag.nts : 0)
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 mb-5">
+            <div class="card h-100 shadow border-0">
+                <div class="card-body p-4">
+                    <div class="ms-2 me-auto">
+                        <a class="text-decoration-none link-dark stretched-link" href="fpsc-jobs">
+                            <div class="fw-bold h4">FPSC Jobs</div>
+                            Jobs Available: @(ViewBag.fpsc != null ? ViewBag.fpsc : 0)
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 mb-5">
+            <div class="card h-100 shadow border-0">
+                <div class="card-body p-4">
+                    <div class="ms-2 me-auto">
+                        <a class="text-decoration-none link-dark stretched-link" href="/ppsc-jobs">
+                            <div class="fw-bold h4">PPSC Jobs</div>
+                            Jobs Available: @(ViewBag.ppsc != null ? ViewBag.ppsc : 0)
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 mb-5">
+            <div class="card h-100 shadow border-0">
+                <div class="card-body p-4">
+                    <div class="ms-2 me-auto">
+                        <a class="text-decoration-none link-dark stretched-link" href="/fia-online-apply">
+                            <div class="fw-bold h4">FIA Jobs</div>
+                            Jobs Available: @(ViewBag.fia != null ? ViewBag.fia : 0)
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 mb-5">
+            <div class="card h-100 shadow border-0">
+                <div class="card-body p-4">
+                    <div class="ms-2 me-auto">
+                        <a class="text-decoration-none link-dark stretched-link" href="/join-asf">
+                            <div class="fw-bold h4">ASF Jobs</div>
+                            Jobs Available: @(ViewBag.asf != null ? ViewBag.asf : 0)
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 mb-5">
+            <div class="card h-100 shadow border-0">
+                <div class="card-body p-4">
+                    <div class="ms-2 me-auto">
+                        <a class="text-decoration-none link-dark stretched-link" href="/fbr-jobs-2022">
+                            <div class="fw-bold h4">FBR Jobs</div>
+                            Jobs Available: @(ViewBag.fbr != null ? ViewBag.fbr : 0)
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 mb-5">
+            <div class="card h-100 shadow border-0">
+                <div class="card-body p-4">
+                    <div class="ms-2 me-auto">
+                        <a class="text-decoration-none link-dark stretched-link" href="/nab-jobs-2022">
+                            <div class="fw-bold h4">NAB Jobs</div>
+                            Jobs Available: @(ViewBag.nab != null ? ViewBag.nab : 0)
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 mb-5">
+            <div class="card h-100 shadow border-0">
+                <div class="card-body p-4">
+                    <div class="ms-2 me-auto">
+                        <a class="text-decoration-none link-dark stretched-link" href="/nadra-jobs-2022">
+                            <div class="fw-bold h4">NADRA Jobs</div>
+                            Jobs Available: @(ViewBag.nadra != null ? ViewBag.nadra : 0)
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 mb-5">
+            <div class="card h-100 shadow border-0">
+                <div class="card-body p-4">
+                    <div class="ms-2 me-auto">
+                        <a class="text-decoration-none link-dark stretched-link" href="/ministry-of-climate-change-jobs">
+                            <div class="fw-bold h4">MOCC Jobs</div>
+                            Jobs Available: @(ViewBag.mocc != null ? ViewBag.mocc : 0)
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,207 @@
+﻿@model IList<KnowledgeTestLibrary.Models.TestQuestion>
+
+@{
+
+}
+
+<style>
+    /* Hide all steps by default: */
+    .tab {
+        display: none;
+    }
+
+    .page-item.active .page-link {
+        background-color: rgba(0,0,0,0.5);
+    }
+
+    .page-link.checked {
+        color: white;
+        background-color: #66BB6A;
+    }
+
+    .page-item.active .page-link.checked {
+        color: white;
+        background-color: #1B5E20;
+    }
+
+</style>
+
+<br />
+
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+
+        <div class="card border shadow-none p-5 text-start rounded-0 details">
+            <p><i class="fa-solid fa-book me-2"></i> Subject <strong>@TempData["Subject"]</strong></p>
+            <p><i class="fa fa-list-ul me-2" aria-hidden="true"></i> <strong>15</strong> Multiple choice questions</p>
+            <p><i class="fa-regular fa-clock me-2"></i> Time available <strong>15m</strong></p>
+            <p><button class="btn btn-primary btn-start">Start</button></p>
+        </div>
+        <div class="text-center">
+            <strong><span class="p-2" id="time" style="background:#d0f1dd">15m 0s</span></strong>
+        </div>
+        <div class="card border shadow-none rounded-0 card-test">
+            <form method="post" asp-action="SaveExam" class="test-form">
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+                    <input asp-for="@Model[i].QuestionId" type="hidden" />
+                    <div class="tab">
+                        <div class="card-header">
+                            <strong>Q#@(i+1): @Model[i].Question.Statement</strong>
+                        </div>
+                        <div class="card-body">
+                            <ol type="A">
+                                @for (int x = 0; x < 4; x++)
+                                {
+                                    <li class="mb-2">
+                                        <div class="d-lg-grid">
+                                            <input type="radio" asp-for="@Model[i].SelectedOption" id="@Model[i].Question.Options[x].Id" value="@Model[i].Question.Options[x].Id" class="btn-check" onclick="markIndicator(@i)">
+                                            <label class="btn btn-light btn-lg shadow-none text-start" for="@Model[i].Question.Options[x].Id">@Model[i].Question.Options[x].Statement</label>
+                                        </div>
+                                    </li>
+                                }
+                            </ol>
+                        </div>
+
+                    </div>
+
+                }
+                <div class="card-footer text-center">
+                    <button class="btn btn-link float-start shadow-none" type="button" id="prevBtn" onclick="nextPrev(-1)"><i class="fa fa-arrow-left" aria-hidden="true"></i> Previous</button>
+                    <span class="text-lg-center"><strong><span id="q-count">1</span>/@Model.Count()</strong></span>
+                    <button class="btn btn-link float-end shadow-none" type="button" id="nextBtn" onclick="nextPrev(1)">Next <i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+                    <input type="submit" class="btn btn-primary float-end shadow-none" id="submitBtn" />
+                </div>
+            </form>
+
+        </div>
+        <br />
+        <ul class="pagination justify-content-center gap-2 flex-wrap">
+            @for (int i = 0; i < @Model.Count(); i++)
+            {
+                <li class="page-item"><button class="btn btn-sm page-link" onclick="pageLink(@i)">@(i+1)</button></li>
+            }
+        </ul>
+    </div>
+</div>
+
+<br />
+@section scripts{
+    <script>
+        var currentTab = 0;
+        showTab(currentTab);
+        fixStepIndicator(currentTab);
+
+        $('.details').show();
+        $('.card-test').hide();
+        $('#time').hide();
+        $('.pagination').hide();
+
+        function showTab(n) {
+
+            var x = document.getElementsByClassName("tab");
+
+            $('#q-count').text(n + 1);
+            x[n].style.display = "block";
+
+            if (n == 0) {
+                $("#prevBtn").prop('disabled', true);
+            } else {
+                $("#prevBtn").prop('disabled', false);
+            }
+            if (n == (x.length - 1)) {
+                $("#nextBtn").hide();
+                $("#submitBtn").show();
+            } else {
+                $("#submitBtn").hide();
+                $("#nextBtn").show();
+            }
+            fixStepIndicator(n);
+        }
+
+        function nextPrev(n) {
+
+            var x = document.getElementsByClassName("tab");
+
+            if (n >= x.length) {
+                return false;
+            }
+
+            x[currentTab].style.display = "none";
+
+            currentTab = currentTab + n;
+
+            showTab(currentTab);
+        }
+
+        function pageLink(n) {
+
+            var x = document.getElementsByClassName("tab");
+
+            if (n >= x.length) {
+                return false;
+            }
+
+            x[currentTab].style.display = "none";
+
+            currentTab = n;
+
+            showTab(currentTab);
+        }
+
+        $('.btn-start').on('click', function() {
+
+            $('.details').hide();
+            $('.card-test').show();
+            $('#time').show();
+            $('.pagination').show();
+
+            var countDownTime = new Date().getTime() + 15 * 60 * 1000;
+
+            setInterval(function() {
+
+                var now = new Date().getTime();
+
+                var distance = countDownTime - now;
+
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById("time").innerHTML = minutes + "m " + seconds + "s";
+
+                if (distance < 0) {
+                    $('.test-form').submit();
+                }
+            }, 1000);
+
+            $.ajax({
+                'url': '/exam/settempdata',
+                'method': 'get'
+            });
+
+        });
+
+        function fixStepIndicator(n) {
+
+            var i, x = $('.page-item');
+
+            for (i = 0; i < x.length; i++) {
+                $(x[i]).removeClass('active');
+            }
+
+            $(x[n]).addClass('active');
+
+        }
+
+        function markIndicator(n) {
+
+            var x = $('.page-item');
+
+            $(x[n]).children().addClass('checked');
+
+            pageLink(n + 1);
+        }
+
+    </script>
+}

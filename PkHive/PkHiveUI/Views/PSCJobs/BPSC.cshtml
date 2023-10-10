@@ -1,0 +1,166 @@
+﻿@model IEnumerable<PkHiveLibrary.Models.JobViewModel>
+
+@{
+    ViewData["Title"] = "Latest BPSC Jobs, Job Vacancies, and Career Opportunities";
+    ViewData["Description"] = " BPSC jobs, vacancies, and notifications for all BPSC jobs in Pakistan. Find out the latest BPSC jobs, and employment opportunities";
+    ViewData["KeyWord"] = "BPSC Jobs";
+    ViewData["url"] = "https://pkhive.com/fpsc-jobs";
+    ViewData["url-img"] = "https://pkhive.com/og-img/FPSC.png";
+    int i = 1;
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p class="fs-5">
+    Balochistan Public Service Commission (BPSC) is a service commission office in Balochistan province which has the primary responsibility to announce Jobs and perform necessary steps to recruit candidates for respective jobs.BPSC can be announced in a variety of government sectors in Balochistan such as health and education.
+</p>
+
+<p><a href="#jobs" class="fs-5">List of latest BPSC Jobs</a></p>
+
+<p class="fs-5">
+    Balochistan Public Service Commission works under the government of Balochistan. The jobs announced by the BPSC are only available for candidates from Balochistan.
+</p>
+
+<section id="jobs">
+    @if (Model.Count() == 0)
+    {
+        <p class="fs-5 mt-5 fw-bold">No jobs available.</p>
+        <p class="fs-5 mt-5">For related jobs information. Click <a href="/">here</a></p>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped caption-top">
+                <caption><h3><strong>Jobs List</strong></h3></caption>
+                <thead>
+                    <tr>
+                        <th>Job Title</th>
+                        <th>Vacancies</th>
+                        <th>Last Date</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Job.Title</td>
+                            <td>@item.Job.Vacancies</td>
+                            <td>@item.Job.LastDate.ToString("dd-MMM-yyyy")</td>
+                            <td class="text-center">
+                                <button class="btn btn-sm bg-primary text-white rounded-5 btn-jobinfo"
+                                data-vacancies="@item.Job.Vacancies"
+                                data-department="@item.Job.Department"
+                                data-posteddate="@item.Job.PostedDate.ToString("dd-MMM-yyyy")"
+                                data-lastdate="@item.Job.LastDate.ToString("dd-MMM-yyyy")"
+                                data-qualifications="@item.Job.Qualification"
+                                data-experience="@item.Job.Experience"
+                                data-payscale="@item.Job.PayScale"
+                                data-description="@item.Job.Description"
+                                title="Job Details">
+                                    <i class="bi bi-list"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</section>
+
+<div class="modal fade" id="job-modal" tabindex="-1" aria-labelledby="job-modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="job-modalLabel">Job Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <dl>
+                    <dt>Department</dt>
+                    <dd id="dd-department"></dd>
+                    <dt>Vacancies</dt>
+                    <dd id="dd-vacancies"></dd>
+                    <dt>Posted Date</dt>
+                    <dd id="dd-posteddate"></dd>
+                    <dt>Last Date</dt>
+                    <dd id="dd-lastdate"></dd>
+                    <dt>Pay Scale</dt>
+                    <dd id="dd-payscale"></dd>
+                    <dt>Qualifications</dt>
+                    <dd id="dd-qualifications"></dd>
+                    <dt>Experience</dt>
+                    <dd id="dd-experience"></dd>
+                    <dt>Description</dt>
+                    <dd id="dd-description"></dd>
+                </dl>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" target="_blank">Apply Now</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $('.btn-jobinfo').on('click', function() {
+            $('#dd-payscale').text($(this).data('payscale'));
+            $('#dd-vacancies').text($(this).data('vacancies'));
+            $('#dd-department').text($(this).data('department'));
+            $('#dd-experience').text($(this).data('experience'));
+            $('#dd-qualifications').text($(this).data('qualifications'));
+            $('#dd-posteddate').text($(this).data('posteddate'));
+            $('#dd-lastdate').text($(this).data('lastdate'));
+            $('#dd-description').text($(this).data('description'));
+            $("#job-modal").modal("toggle");
+        });
+    </script>
+
+        @foreach (var item in Model)
+    {
+        <script type="application/ld+json">
+            {
+              "@@context" : "https://schema.org/",
+              "@@type" : "JobPosting",
+              "title" : "@item.Job.Title",
+              "description" : "<p>@item.Job.Description</p>",
+              "identifier": {
+                "@@type": "PropertyValue",
+                "name": "pkhive.com",
+                "value": "@item.Job.Id"
+              },
+              "datePosted" : "@item.Job.PostedDate.ToString("yyyy-MM-dd")",
+              "validThrough" : "@item.Job.PostedDate.ToString("yyyy-MM-ddThh:mm")",
+              "employmentType" : "FULL_TIME",
+              "hiringOrganization" : {
+                "@@type" : "Organization",
+                "name" : "BPSC - Balochistan Public Service Commission",
+                "sameAs" : "http://bpsc.gob.pk/"
+              },
+              "jobLocation": {
+              "@@type": "Place",
+                "address": {
+                "@@type": "PostalAddress",
+                "addressLocality": "Quetta",
+                "addressRegion": "Balochistan",
+                "postalCode": "87300",
+                "addressCountry": "Pakistan"
+                }
+              },
+              "baseSalary": {
+                "@@type": "MonetaryAmount",
+                "currency": "PKR",
+                 "value": {
+                  "@@type": "QuantitativeValue",
+                  "minValue": "@item.Job.MinSalary",
+                  "maxValue": "@item.Job.MaxSalary",
+                  "unitText": "Monthly"
+                }
+              }
+            }
+        </script>
+    }
+}

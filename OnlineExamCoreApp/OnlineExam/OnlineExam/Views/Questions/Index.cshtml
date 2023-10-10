@@ -1,0 +1,427 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "_LayoutAdmin";
+}
+<br />
+
+<h3>Questions</h3>
+<hr />
+<div class="row my-3">
+    <div class="col-md-4">
+        <label>Filter</label>
+        <select id="SubjectId" class="form-control" asp-items="ViewBag.SubjectId"></select>
+    </div>
+</div>
+
+<div class="modal" id="questionsModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <form asp-action="Save" data-ajax="true" data-ajax-method="POST" id="questions-form">
+                <div class="modal-body">
+
+                    <input type="hidden" id="QuestionId" />
+                    <input type="hidden" id="Option1Id" />
+                    <input type="hidden" id="Option2Id" />
+                    <input type="hidden" id="Option3Id" />
+                    <input type="hidden" id="Option4Id" />
+                    <div class="form-group">
+                        <label class="control-label">Subject</label>
+                        <select id="SubjectId" class="form-control" asp-items="ViewBag.SubjectId"></select>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Question</label>
+                        <input type="text" id="Question" class="form-control" />
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label class="control-label">Option 1</label>
+                                <input type="text" id="Option1" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <br />
+                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" id="Option1Radio" name="OptionRadio" checked="checked">
+                                    Option 1
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label class="control-label">Option 2</label>
+                                <input type="text" id="Option2" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <br />
+                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" id="Option2Radio" name="OptionRadio">
+                                    Option 2
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label class="control-label">Option 3</label>
+                                <input type="text" id="Option3" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <br />
+                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" id="Option3Radio" name="OptionRadio">
+                                    Option 3
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label class="control-label">Option 4</label>
+                                <input type="text" id="Option4" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <br />
+                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" id="Option4Radio" name="OptionRadio">
+                                    Option 4
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <input type="button" value="Save Changes" class="btn btn-primary btn-save" />
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<hr />
+
+<table class="table table-bordered table-striped table-responsive d-lg-table w-100" id="questions-dt">
+    <thead>
+        <tr>
+            <th style="width:50px;">
+            </th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th>
+                Question
+            </th>
+            <th>
+                Option #1
+            </th>
+            <th>
+                Option #2
+            </th>
+            <th>
+                Option #3
+            </th>
+            <th>
+                Option #4
+            </th>
+        </tr>
+    </thead>
+</table>
+
+@section scripts{
+<script>
+//const { ajax } = require("jquery");
+
+    var rowData;
+
+    var table = $('#questions-dt').DataTable({
+        dom: 'Bfrtip',
+        columnDefs: [
+            {
+                orderable: false,
+                className: 'select-checkbox',
+                targets: 0
+            },
+            {
+                visible:false,
+                targets:[1,2,3,4,5,6]
+            }
+        ],
+        select: {
+            style: 'os',
+            selector: 'td:first-child'
+        },
+        buttons: {
+            buttons: [
+                        {
+                            text: '<i class="fa fa-plus mr-2"></i>Add New',
+                            className: 'btn-primary',
+                            action: function ( e, dt, node, config ) {
+                                Add();
+                            }
+                        },
+                        {
+                            text: '<i class="fa fa-edit mr-2"></i>Edit',
+                            className: 'btn-success',
+                            action: function ( e, dt, node, config ) {
+                                Edit();
+                            }
+                        },
+                        {
+                            text : '<i class="fas fa-trash-alt mr-2"></i>Delete',
+                            className: 'btn-danger',
+                            action: function ( e, dt, node, config ) {
+                                Delete();
+                            }
+                        }
+             ],
+            dom: {
+               button: {
+                        className: 'btn btn-sm'
+                    },
+                    buttonLiner: {
+                        tag: null
+                    }
+            }
+        },
+        "ajax": {
+            "url": '/Questions/Get',
+            "type": 'get',
+            "data": function (d) {
+                d.subjectId = $('#SubjectId').val();
+            },
+        },
+        "columns": [
+            { "data": "i" },
+            { "data": "question.id" },
+            { "data": "question.subjectId" },
+            { "data": "options.0.id" },
+            { "data": "options.1.id" },
+            { "data": "options.2.id" },
+            { "data": "options.3.id" },
+            { "data": "question.quest" },
+            {
+                "data": "options.0",
+                render: function (option) {
+                    if (option.isAnswer) {
+                        return ' <i class="fas fa-check"></i> ' + option.opt;
+                    }
+                    else {
+                        return option.opt;
+                    }
+                }
+            },
+            {
+                "data": "options.1",
+                render: function (option) {
+                    if (option.isAnswer) {
+                        return ' <i class="fas fa-check"></i> ' + option.opt;
+                    }
+                    else {
+                        return option.opt;
+                    }
+                }
+            },
+            {
+                "data": "options.2",
+                render: function (option) {
+                    if (option.isAnswer) {
+                        return ' <i class="fas fa-check"></i> ' + option.opt;
+                    }
+                    else {
+                        return option.opt;
+                    }
+                }
+            },
+            {
+                "data": "options.3",
+                render: function (option) {
+                    if (option.isAnswer) {
+                        return ' <i class="fas fa-check"></i> ' + option.opt;
+                    }
+                    else {
+                        return option.opt;
+                    }
+                }
+            },
+        ]
+    });
+
+    $('#SubjectId').on('change', function(){
+        table.ajax.reload();
+    });
+
+
+    $('#questions-dt').on('click', 'tbody td:first-child', function () {
+
+        var row = $(this).closest('tr');
+
+        if (row.hasClass('selected')) {
+            row.removeClass('selected');
+            rowData = null;
+        }
+        else {
+            table.$('tr.selected').removeClass('selected');
+            row.addClass('selected');
+            rowData = table.row('.selected').data();
+        }
+    });
+
+    function Add(){
+        $('#questionsModal').modal('toggle');
+    }
+    function Edit(){
+        if(rowData == null){
+            swal("Error!", "No Row Selected!", "error");
+            return;
+        }
+
+        $('#SubjectId').val(rowData.question.subjectId);
+        $('#QuestionId').val(rowData.question.id);
+        $('#Option1Id').val(rowData.options[0].id);
+        $('#Option2Id').val(rowData.options[1].id);
+        $('#Option3Id').val(rowData.options[2].id);
+        $('#Option4Id').val(rowData.options[3].id);
+
+        $('#Question').val(rowData.question.quest);
+        $('#Option1').val(rowData.options[0].opt);
+        $('#Option2').val(rowData.options[1].opt);
+        $('#Option3').val(rowData.options[2].opt);
+        $('#Option4').val(rowData.options[3].opt);
+
+        $('#Option1Radio').prop('checked', rowData.options[0].isAnswer);
+        $('#Option2Radio').prop('checked', rowData.options[1].isAnswer);
+        $('#Option3Radio').prop('checked', rowData.options[2].isAnswer);
+        $('#Option4Radio').prop('checked', rowData.options[3].isAnswer);
+
+        $('#questionsModal').modal('toggle');
+    }
+    function Delete(){
+        if(rowData == null){
+            swal("Error!", "No Row Selected!", "error");
+            return;
+        }
+
+        swal({
+          title: "Are you sure?",
+          text: "Once deleted, you will not be able to recover this row!",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+        })
+        .then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    url: '/Questions/Delete',
+                    method: 'delete',
+                    data: { Id: rowData.question.id },
+                    success: function (res) {
+                        swal("Selected row has been deleted!", {
+                            icon: "success",
+                        });
+                        rowData = null;
+                        table.ajax.reload();
+                    }
+                });
+          }
+        });
+    }
+
+    $('.btn-save').on('click', function () {
+
+        var obj = {
+            Question: {
+                SubjectId: $('#SubjectId').val(),
+                Id: $('#QuestionId').val(),
+                Quest: $('#Question').val()
+            },
+            Options: [
+            {
+                Id: $('#Option1Id').val(),
+                QuestionId:$('#QuestionId').val(),
+                Opt: $('#Option1').val(),
+                IsAnswer: $('#Option1Radio').prop('checked')
+            },
+            {
+                Id: $('#Option2Id').val(),
+                QuestionId:$('#QuestionId').val(),
+                Opt: $('#Option2').val(),
+                IsAnswer: $('#Option2Radio').prop('checked')
+            },
+            {
+                Id: $('#Option3Id').val(),
+                QuestionId:$('#QuestionId').val(),
+                Opt: $('#Option3').val(),
+                IsAnswer: $('#Option3Radio').prop('checked')
+            },
+            {
+                Id: $('#Option4Id').val(),
+                QuestionId:$('#QuestionId').val(),
+                Opt: $('#Option4').val(),
+                IsAnswer: $('#Option4Radio').prop('checked')
+            }]
+        };
+
+        $.ajax({
+            url: '/Questions/Save',
+            method: 'post',
+            data: obj,
+            success: function (res) {
+                if (res.success) {
+                    $('#questionsModal').modal('toggle');
+                    swal("Success!", "Data Saved Successfully!", "success");
+                    table.ajax.reload();
+                }
+                else{
+                    swal("Error!", res.message, "error");
+                }
+            }
+        });
+
+    });
+
+    $('#questionsModal').on('hidden.bs.modal', function () {
+
+        $('#SubjectId').prop('selectedIndex', 0);
+        $('#QuestionId').val('');
+        $('#Option1Id').val('');
+        $('#Option2Id').val('');
+        $('#Option3Id').val('');
+        $('#Option4Id').val('');
+
+        $('#Question').val('');
+        $('#Option1').val('');
+        $('#Option2').val('');
+        $('#Option3').val('');
+        $('#Option4').val('');
+
+        $('#Option1Radio').prop('checked', true);
+    });
+
+</script>
+}

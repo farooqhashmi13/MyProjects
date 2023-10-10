@@ -1,0 +1,209 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- Site Metas -->
+    <title>Greatseo - Bootstrap 4 Responsive HTML5 Template</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Site Icons -->
+    <link rel="shortcut icon" href="~/Content/images/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="~/Content/images/apple-touch-icon.png">
+
+    @Styles.Render("~/bundle/mainStyles")
+
+    @Scripts.Render("~/bundles/modernizr")
+    <script src="~/Content/js/modernizr.custom.79639.js"></script>
+
+</head>
+<body class="seo_version">
+
+    <style>
+        .navbar-nav {
+            background: #4e73df !important;
+            border-radius: 5px;
+        }
+
+        body.seo_version .section.db, body.seo_version .dmtop, body.seo_version .dmtop, body.seo_version .affix {
+            background-color: #4e73df !important;
+        }
+
+        .all-page-title {
+            padding: 20px;
+        }
+
+        .bg-primary {
+            background-color: #4e73df !important;
+        }
+
+        .btn-primary {
+            background-color: #4e73df;
+            border-color: #4e73df;
+        }
+
+        .list-group-item.active {
+            background-color: #4e73df;
+            border-color: #4e73df;
+        }
+
+        /*.copyrights {
+            position: relative;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #1d1d1d;
+            color: white;
+            text-align: center;
+        }*/
+    </style>
+
+    <!-- LOADER -->
+    <div id="preloader">
+        <div class="loader-wrapper">
+            <div class="loader-new">
+                <div class="ball"></div>
+                <div class="ball"></div>
+                <div class="ball"></div>
+            </div>
+            <div class="text">LOADING...</div>
+        </div>
+    </div><!-- end loader -->
+    <!-- END LOADER -->
+
+
+
+    <header class="top-navbar">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container">
+                <a class="navbar-brand" href="@Url.Action("Index","Home")">
+                    <img src="~/Content/images/logo-seo.png" alt="" />
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars-seo" aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbars-seo">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item @(ViewContext.RouteData.Values["Action"].ToString() == "Index" &&  ViewContext.RouteData.Values["Controller"].ToString() == "Home"? "active" : "")">
+                            <a class="nav-link" href="@Url.Action("Index","Home")">Home</a>
+                        </li>
+                        <li class="nav-item @(ViewContext.RouteData.Values["Controller"].ToString() == "Test" ? "active" : "")">
+                            <a class="nav-link" href="@Url.Action("Index","Test")">Test</a>
+                        </li>
+                        <li class="nav-item @(ViewContext.RouteData.Values["Action"].ToString() == "About" &&  ViewContext.RouteData.Values["Controller"].ToString() == "Home"? "active" : "")">
+                            <a class="nav-link" href="@Url.Action("About","Home")">About us </a>
+                        </li>
+                        <li class="nav-item @(ViewContext.RouteData.Values["Action"].ToString() == "Contact" &&  ViewContext.RouteData.Values["Controller"].ToString() == "Home"? "active" : "")">
+                            <a class="nav-link" href="@Url.Action("Contact","Home")">Contact</a>
+                        </li>
+                        @Html.Partial("_LoginPartial")
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div style="max-width:100%">
+        @RenderBody()
+    </div>
+
+
+    @*<div class="container" style="margin-top:1%">
+            <div class="inner-container">
+            </div>
+        </div>*@
+
+    <div class="copyrights">
+        <div class="container">
+            <div class="footer-distributed">
+                <div class="footer-left">
+                    <p class="footer-company-name">All Rights Reserved. &copy; @DateTime.Now.Year <a href="#">GreatSEO</a> Design By : <a href="https://html.design/">html design</a></p>
+                </div>
+            </div>
+        </div><!-- end container -->
+    </div><!-- end copyrights -->
+
+
+    <a href="#" id="scroll-to-top" class="dmtop global-radius"><i class="fa fa-angle-up"></i></a>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundle/mainScripts")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/toaster")
+    @RenderSection("scripts", required: false)
+
+    <script type="text/javascript">
+        $(function () {
+
+            var Page = (function () {
+
+                var $nav = $('#nav-dots > span'),
+                    slitslider = $('#slider').slitslider({
+                        onBeforeChange: function (slide, pos) {
+
+                            $nav.removeClass('nav-dot-current');
+                            $nav.eq(pos).addClass('nav-dot-current');
+
+                        }
+                    }),
+
+                    init = function () {
+
+                        initEvents();
+
+                    },
+                    initEvents = function () {
+
+                        $nav.each(function (i) {
+
+                            $(this).on('click', function (event) {
+
+                                var $dot = $(this);
+
+                                if (!slitslider.isActive()) {
+
+                                    $nav.removeClass('nav-dot-current');
+                                    $dot.addClass('nav-dot-current');
+
+                                }
+
+                                slitslider.jump(i + 1);
+                                return false;
+
+                            });
+
+                        });
+
+                    };
+
+                return { init: init };
+
+            })();
+
+            Page.init();
+            toastr.options = {
+                "closeButton": true
+            }
+        })
+
+    </script>
+
+    <script>
+        tippy('.btn-a')
+    </script>
+
+
+
+</body>
+</html>
+
+@**@
+
+

@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30717.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkilledResume", "SkilledResume\SkilledResume.csproj", "{C4D17AA2-5492-4A99-A942-9BFC5570E657}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C4D17AA2-5492-4A99-A942-9BFC5570E657}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4D17AA2-5492-4A99-A942-9BFC5570E657}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4D17AA2-5492-4A99-A942-9BFC5570E657}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4D17AA2-5492-4A99-A942-9BFC5570E657}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4006685C-44FC-4B98-B491-E21B4B5407AA}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 2
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://dev.azure.com/farooqhashmi13
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = SkilledResume\\SkilledResume.csproj
+		SccProjectName1 = SkilledResume
+		SccLocalPath1 = SkilledResume
+	EndGlobalSection
+EndGlobal

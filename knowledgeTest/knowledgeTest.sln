@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "knowledgeTestIdentity", "knowledgeTestUI\knowledgeTestIdentity.csproj", "{A52FD43F-1DED-4F19-8469-3CC01CE06739}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KnowledgeTestLibrary", "KnowledgeTestLibrary\KnowledgeTestLibrary.csproj", "{FA04C36D-FFAC-4D1A-9B64-34AB5B4BC855}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnowledgeTestViews", "KnowledgeTestViews\KnowledgeTestViews.csproj", "{B8B980FF-F580-4714-B47B-D8772327B8E5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A52FD43F-1DED-4F19-8469-3CC01CE06739}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A52FD43F-1DED-4F19-8469-3CC01CE06739}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A52FD43F-1DED-4F19-8469-3CC01CE06739}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A52FD43F-1DED-4F19-8469-3CC01CE06739}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA04C36D-FFAC-4D1A-9B64-34AB5B4BC855}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA04C36D-FFAC-4D1A-9B64-34AB5B4BC855}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA04C36D-FFAC-4D1A-9B64-34AB5B4BC855}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA04C36D-FFAC-4D1A-9B64-34AB5B4BC855}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8B980FF-F580-4714-B47B-D8772327B8E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8B980FF-F580-4714-B47B-D8772327B8E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8B980FF-F580-4714-B47B-D8772327B8E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8B980FF-F580-4714-B47B-D8772327B8E5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2C0D39B9-7A89-4AC2-B334-152F1AB67B47}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://dev.azure.com/farooqhashmi13
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = KnowledgeTestLibrary\\KnowledgeTestLibrary.csproj
+		SccProjectName1 = KnowledgeTestLibrary
+		SccLocalPath1 = KnowledgeTestLibrary
+		SccProjectUniqueName2 = KnowledgeTestViews\\KnowledgeTestViews.csproj
+		SccProjectName2 = KnowledgeTestViews
+		SccLocalPath2 = KnowledgeTestViews
+		SccProjectUniqueName3 = knowledgeTestUI\\knowledgeTestIdentity.csproj
+		SccProjectName3 = knowledgeTestUI
+		SccLocalPath3 = knowledgeTestUI
+	EndGlobalSection
+EndGlobal

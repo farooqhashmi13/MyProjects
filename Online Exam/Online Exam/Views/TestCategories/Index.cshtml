@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Online_Exam.Models.TestCategory>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <a class="btn btn-primary" href="@Url.Action("Create","TestCategories")"><i class="fa fa-plus"> Create New</i></a>
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <table id="questions-table" class="table table-hover table-striped table-bordered" style="width:100%; background:white">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            <a class="" href="@Url.Action("Edit",new { id = item.Id })" style="color:green"><i class="fa fa-edit"></i></a>
+                            <a class="" href="@Url.Action("Details",new { id = item.Id })" style="color:deepskyblue"><i class="fa fa-bars"></i></a>
+                            <a class="" href="@Url.Action("Delete",new { id = item.Id })" style="color:red"><i class="fa fa-trash"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
+</div>
+<hr />
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function() {
+            $('#questions-table').DataTable();
+        });
+    </script>
+}

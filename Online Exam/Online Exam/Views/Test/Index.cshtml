@@ -1,0 +1,163 @@
+﻿
+@{
+    ViewBag.title = "Test";
+}
+
+<div class="all-page-title">
+    <!--Page -->
+    <div class="page-info">
+        <div class="container">
+            <div class="inner-container">
+                <ul class="bread-crumb">
+                    <li><a href="@Url.Action("Index","Home")">Home</a></li>
+                    <li><i class="fa fa-angle-double-right" aria-hidden="true"></i></li>
+                    <li><span>Test</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--End Page-->
+    <h1>Start Test</h1>
+    <div class="container text-center">
+        <p>Choose any of the following Catagories...</p>
+        <div class="row">
+            <div class="col-md-2">
+
+            </div>
+
+
+            @*<div class="col-md-4">
+                    @Html.DropDownList("TestSubId", new SelectList(ViewBag.SubjectCat, "Id", "Name"), "Select Subject...", new { @class = "form-control" })
+                    <select id="totalQuest" class="form-control" style="display:none">
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>*@
+            @*<div class="col-md-2">
+                    <input type="button" id="btnStartTest" class="btn btn-primary" value="Start Now" />
+                </div>*@
+        </div>
+        <div class="row" id="nts-row" style="display:none">
+
+        </div>
+        <div class="row" id="custom-row" style="display:none">
+
+        </div>
+    </div>
+</div>
+
+    <div class="row m-4">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary">
+                    <h1 class="text-white">NTS</h1>
+                </div>
+                <div class="card-body">
+                    @Html.DropDownList("nTestSubId", new SelectList(ViewBag.SubjectCat, "Id", "Name"), "Select Subject...", new { @class = "form-control" })
+                    <ul>
+                        <li>
+                            <strong>1.  Total Questions 100</strong>
+                        </li>
+                        <li>
+                            <strong>2.  Total Time 120m</strong>
+                        </li>
+                        <li>
+                            <strong>3.  Total Portions 4, 1st English(20), 2nd Analytical(15), 3rd Quantitative(15), 4th Subject(50)</strong>
+                        </li>
+                    </ul>
+                    <button class="btn btn-primary btn-lg mt-2 pull-right" data-testCat="NTS" id="btnNTS">Start Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row m-4">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary">
+                    <h1 class="text-white">Custom Category</h1>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            @Html.DropDownList("cTestSubId", new SelectList(ViewBag.SubjectCat, "Id", "Name"), "Select Subject...", new { @class = "form-control" })
+                        </div>
+                        <div class="col-md-6">
+                            <select class="form-control" id="totalQuest">
+                                <option value="">Select total questions...</option>
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                        </div>
+                    </div>
+                    <ul>
+                        <li>
+                            <strong>1.  Choose Total number of questions</strong>
+                        </li>
+                        <li>
+                            <strong>2.  Choose Subject</strong>
+                        </li>
+                        <li>
+                            <strong>3.  Time will be given according to the questions</strong>
+                        </li>
+                    </ul>
+                    <button class="btn btn-primary btn-lg mt-2 pull-right" value="Custom" data-testCat="Custom" id="btnCustom">Start Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+@section Scripts
+{
+    <script>
+        $('#btnNTS').click(function () {
+            var subCat = $("#nTestSubId option:selected").val();
+            if (subCat != '') {
+                var url = '/Test/Index?testCat=NTS&subCat='+subCat+'&totalQuests=100';
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    success: function (response) {
+                        if (response.Success) {
+                            window.location.href = '/Test/StartTest';
+                        }
+                        else {
+                            toastr.error('Something went wrong!', 'Please try after sometime.');
+                        }
+                    }
+                })
+            }
+            else {
+                toastr.error('Please Select Test subject!');
+            }
+        });
+
+        $("#btnCustom").click(function () {
+            var subCat = $("#cTestSubId option:selected").val();
+            var totalQuest = $("#totalQuest option:selected").val();
+            if ((subCat != '') && (totalQuest != '')) {
+                var url = '/Test/Index?testCat=Custom&subCat='+subCat+'&totalQuests='+totalQuest;
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    success: function (response) {
+                        if (response.Success) {
+                            window.location.href = '/Test/StartTest';
+                        }
+                        else {
+                            toastr.error('Something went wrong!', 'Please try after sometime.');
+                        }
+                    }
+                })
+            }
+            else {
+                toastr.error('Please Select Test subject & total Questions!');
+            }
+        });
+
+    </script>
+}

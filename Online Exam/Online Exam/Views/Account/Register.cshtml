@@ -1,0 +1,42 @@
+﻿@model Online_Exam.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+<div class="text-center">
+    <h1 class="h4 text-gray-900 mb-4">@ViewBag.Title</h1>
+</div>
+
+@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.TextBoxFor(m => m.Email, new { @class = "form-control form-control-user", @placeholder = "Email Address" })
+    </div>
+    <div class="form-group">
+        @Html.PasswordFor(m => m.Password, new { @class = "form-control form-control-user", @placeholder = "Password" })
+    </div>
+    <div class="form-group">
+        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control form-control-user", @placeholder = "Confirm Password" })
+    </div>
+    <div class="form-group">
+        <input type="submit" class="btn btn-primary btn-user btn-block" value="Register" />
+    </div>
+}
+<hr />
+<a href="index.html" class="btn btn-google btn-user btn-block">
+    <i class="fab fa-google fa-fw"></i> Register with Google
+</a>
+<a href="index.html" class="btn btn-facebook btn-user btn-block">
+    <i class="fab fa-facebook-f fa-fw"></i> Register with Facebook
+</a>
+<hr>
+<div class="text-center">
+    <a class="small" href="@Url.Action("Login")">Already have account?</a>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

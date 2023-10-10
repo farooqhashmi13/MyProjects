@@ -1,0 +1,190 @@
+﻿@{
+    ViewData["Title"] = "pkhive.com";
+    ViewData["Description"] = "Pkhive is a greate website for job seekers. All job types can be found in one location for job searchers. For your convenience";
+    ViewData["url"] = "https://pkhive.com/";
+    ViewData["url-img"] = "https://pkhive.com/og-img/og-image.png";
+}
+
+<style>
+
+    .card-job:hover {
+        border: 1px solid !important;
+        border-color: var(--color-primary) !important;
+    }
+
+</style>
+
+<section id="jobs-category" class="bg-light mb-5">
+    <div class="container">
+        <div class="container aos-init aos-animate" data-aos="fade-up">
+            <div class="section-header">
+                <h2>Job Categories</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card border border-0 bg-white card-job">
+                    <div class="card-body text-center">
+                        <h2 class="card-title">NTS</h2>
+                        <h6 class="card-subtitle mb-2 text-muted">@ViewBag.NTSCount Job(s)</h6>
+                        <a href="/nts-jobs" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card border border-0 bg-white card-job">
+                    <div class="card-body text-center">
+                        <h2 class="card-title">FPSC</h2>
+                        <h6 class="card-subtitle mb-2 text-muted">@ViewBag.FPSCCount Job(s)</h6>
+                        <a href="/fpsc-jobs" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card border border-0 bg-white card-job">
+                    <div class="card-body text-center">
+                        <h2 class="card-title">PPSC</h2>
+                        <h6 class="card-subtitle mb-2 text-muted">@ViewBag.PPSCCount Job(s)</h6>
+                        <a href="/ppsc-jobs" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card border border-0 bg-white card-job">
+                    <div class="card-body text-center">
+                        <h2 class="card-title">KPPSC</h2>
+                        <h6 class="card-subtitle mb-2 text-muted">@ViewBag.KPPSCCount Job(s)</h6>
+                        <a href="/kppsc-jobs" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card border border-0 bg-white card-job">
+                    <div class="card-body text-center">
+                        <h2 class="card-title">SPSC</h2>
+                        <h6 class="card-subtitle mb-2 text-muted">@ViewBag.SPSCCount Job(s)</h6>
+                        <a href="/spsc-jobs" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card border border-0 bg-white card-job">
+                    <div class="card-body text-center">
+                        <h2 class="card-title">BPSC</h2>
+                        <h6 class="card-subtitle mb-2 text-muted">@ViewBag.BPSCCount Job(s)</h6>
+                        <a href="/bpsc-jobs" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="jobs" class="bg-light mb-5">
+    <div class="container">
+        <div class="container aos-init aos-animate" data-aos="fade-up">
+            <div class="section-header">
+                <h2>Jobs List</h2>
+            </div>
+        </div>
+        @if (ViewBag.Jobs == null)
+        {
+            <p class="fs-5 mt-5 fw-bold">No jobs available.</p>
+            <p class="fs-5 mt-5">For related jobs information. Click <a href="/">here</a></p>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Job Title</th>
+                            <th>Vacancies</th>
+                            <th>Last Date</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.Jobs)
+                        {
+                            <tr>
+                                <td>@item.Title</td>
+                                <td>@item.Vacancies</td>
+                                <td>@item.LastDate.ToString("dd-MMM-yyyy")</td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm bg-primary text-white rounded-5 btn-jobinfo"
+                                    data-vacancies="@item.Vacancies"
+                                    data-department="@item.Department"
+                                    data-posteddate="@item.PostedDate.ToString("dd-MMM-yyyy")"
+                                    data-lastdate="@item.LastDate.ToString("dd-MMM-yyyy")"
+                                    data-qualifications="@item.Qualification"
+                                    data-experience="@item.Experience"
+                                    data-payscale="@item.PayScale"
+                                    data-description="@item.Description"
+                                    data-applylink="@item.ApplyLink"
+                                    title="Job Details">
+                                        <i class="bi bi-list"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</section>
+
+<div class="modal fade" id="job-modal" tabindex="-1" aria-labelledby="job-modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="job-modalLabel">Job Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <dl>
+                    <dt>Department</dt>
+                    <dd id="dd-department"></dd>
+                    <dt>Vacancies</dt>
+                    <dd id="dd-vacancies"></dd>
+                    <dt>Posted Date</dt>
+                    <dd id="dd-posteddate"></dd>
+                    <dt>Last Date</dt>
+                    <dd id="dd-lastdate"></dd>
+                    <dt>Pay Scale</dt>
+                    <dd id="dd-payscale"></dd>
+                    <dt>Qualifications</dt>
+                    <dd id="dd-qualifications"></dd>
+                    <dt>Experience</dt>
+                    <dd id="dd-experience"></dd>
+                    <dt>Description</dt>
+                    <dd id="dd-description"></dd>
+                </dl>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <a href="#" class="btn btn-primary btn-apply" target="_blank">Apply Now</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $('.btn-jobinfo').on('click', function() {
+            $('#dd-payscale').text($(this).data('payscale'));
+            $('#dd-vacancies').text($(this).data('vacancies'));
+            $('#dd-department').text($(this).data('department'));
+            $('#dd-experience').text($(this).data('experience'));
+            $('#dd-qualifications').text($(this).data('qualifications'));
+            $('#dd-posteddate').text($(this).data('posteddate'));
+            $('#dd-lastdate').text($(this).data('lastdate'));
+            $('#dd-description').text($(this).data('description'));
+            $('.btn-apply').attr('href', $(this).data('applylink'));
+            $("#job-modal").modal("toggle");
+        });
+    </script>
+}
+
+

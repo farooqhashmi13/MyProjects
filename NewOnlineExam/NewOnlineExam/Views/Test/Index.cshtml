@@ -1,0 +1,107 @@
+﻿@model PagedList.IPagedList<NewOnlineExam.Models.ViewModels.QuestionViewModel>
+@using PagedList;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@{
+    ViewBag.Title = "Start test now";
+}
+
+<!-- Central Modal Danger Demo-->
+<div class="modal fade right" id="ModalDanger" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-notify modal-danger modal-side modal-top-right" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header">
+                <p class="heading">Not Found</p>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="white-text">&times;</span>
+                </button>
+            </div>
+
+            <!--Body-->
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-3">
+                        <p></p>
+                        <p class="text-center"><i class="fas fa-exclamation-circle fa-3x"></i></p>
+                    </div>
+
+                    <div class="col-9">
+                        <p>
+                            Skill Category Not Found
+                        </p>
+                        <p>
+                            You can request this category <a href="/home/contact">here</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!--Footer-->
+            <div class="modal-footer justify-content-center">
+                <a class="btn btn-outline-danger waves-effect" data-dismiss="modal">Close</a>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
+<!-- Central Modal Danger Demo-->
+
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <div class="container px-0">
+
+
+            <!--Section: Content-->
+            <section class="text-center white-text d-flex justify-content-between p-5 indigo lighten-2">
+
+
+                <div class="row w-100">
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" placeholder="Enter Skill" list="suggestions" id="skillCat" />
+                        <datalist id="suggestions">
+                            @foreach (var cat in ViewBag.Categories)
+                            {
+                                <option value="@cat.Name"></option>
+                            }
+                        </datalist>
+                    </div>
+                    
+                    <div class="col-md-4 text-left">
+                        <input type="button" class="btn btn-default btn-lg btn-start" value="Start" style="margin-top: auto; padding: 0.6rem 2.14rem;" />
+                    </div>
+                </div>
+
+            </section>
+            <!--Section: Content-->
+        </div>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+    var timing = null;
+
+        $('.btn-start').on('click', function () {
+            var data = $('#skillCat').val();
+        $.ajax({
+            url: '@Url.Action("CheckCategory", "Test")',
+            data: { 'CatName': data },
+            success: function (res) {
+                if (res.success) {
+                    var link = '@Url.Action("Test", "Test")';
+                    window.location.href = link;
+                }
+                else {
+                    $('#ModalDanger').modal('toggle');
+                }
+            }
+        });
+    });
+    </script>
+}

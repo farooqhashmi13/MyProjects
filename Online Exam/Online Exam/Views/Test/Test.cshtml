@@ -1,0 +1,97 @@
+﻿@model IEnumerable<Online_Exam.Models.Questions>
+
+@{
+    ViewBag.Title = "Test";
+}
+
+@*<style>
+        .dataTables_paginate {
+            display: none;
+        }
+    </style>*@
+
+<h2>Test</h2>
+
+
+<table id="qTable" class="table table-striped table-bordered" style="width:100%">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Category.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Question)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Option1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Option2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Option3)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Option4)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Answer)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Question)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Option1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Option2)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Option3)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Option4)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Answer)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="#" id="qTable_next" class="btn btn-primary">Next &raquo;</a>
+
+@section scripts{
+    <script>
+        $(function () {
+            $('#qTable').DataTable({
+                "pageLength": 1,
+                "bFilter": false,
+                "bLengthChange": false,
+                "info": false,
+                "ordering": false
+            });
+        });
+
+        $('#qTable').page_link('.Next').trigger();
+        $("#target").click(function () {
+            alert("Handler for .click() called.");
+        });
+    </script>
+}

@@ -1,0 +1,225 @@
+﻿@model PagedList.IPagedList<NewOnlineExam.Models.ViewModels.QuestionViewModel>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@{
+    ViewBag.Title = "Test";
+}
+
+<style>
+    .page-link {
+        padding: 8px 16px;
+        border: 1px solid #ddd;
+    }
+
+    .listblock ul li a {
+        padding: 5px 30px 5px 10px;
+        display: block;
+    }
+
+        .listblock ul li a:hover {
+            background: transparent 3px 170px;
+        }
+
+    .progress {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        height: 5px !important;
+    }
+
+    .option {
+        padding: 10px;
+        background: #fff;
+        margin: 10px 0px;
+        border-radius: 50px;
+    }
+
+    div#listItem-1:hover {
+        background: #ccc;
+    }
+
+    div#listItem-2:hover {
+        background: #ccc;
+    }
+
+    div#listItem-3:hover {
+        background: #ccc;
+    }
+
+    div#listItem-4:hover {
+        background: #ccc;
+    }
+
+    .card {
+        font-weight: 400;
+        border: 0;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+
+    /*#listItem-1 :hover{
+        border:1px solid #ccc;
+    }*/
+</style>
+
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <div class="container px-0">
+
+
+            <!--Section: Content-->
+            <section class="text-center white-text d-flex justify-content-between p-5 indigo lighten-2">
+
+
+                <div class="row w-100">
+                    <div class="col-md-12 startDiv text-center">
+                        <input type="button" class="btn btn-default start-now btn-lg btn-block" value="Start Now" />
+                    </div>
+                    <div class="col-md-6 justify-content-center border rounded-pill pt-2 countdown" style="display:none">
+                        <h4 id="countdown"></h4>
+                    </div>
+                    <div class="col-md-6 justify-content-center border rounded-pill pt-2 t-quest" style="display:none">
+                        <h4>Total Questions 15</h4>
+                    </div>
+                </div>
+            </section>
+            <!--Section: Content-->
+
+            <div id="mainContainer" style="display:none">
+                <div id="question-wrapper">
+                    @Html.Partial("_partialViewQuestion", Model)
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+
+@section Scripts
+{
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
+    <script>
+        var timing = null;
+
+        $('.start-now').on('click', function () {
+            $('.startDiv').hide();
+            $('.countdown').show();
+            $('.t-quest').show();
+            $('#mainContainer').show();
+            StartTime();
+        });
+
+        function PostQuestion() {
+            var radioValue = $("input[name='radio-option']:checked").val();
+            if (radioValue) {
+                radioValue = radioValue;
+            }
+            else {
+                radioValue = 0;
+            }
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("PostQuestion","Test")",
+                data: {
+                    QuestionId: $("#txtQuestionId").val(),
+                    OptionId: radioValue,
+                    QuestionNo: $('#txtCurrentQuestion').val(),
+                },
+                success: function (response) {
+                    if (response.success) {
+                    } else {
+                    }
+                },
+                error: function (response) {
+                    alert("Some Thing Went Wrong!");
+                }
+            });
+
+            StartTime();
+        };
+
+    function StartTime() {
+        if (timing) {
+            clearInterval(timing);
+        }
+        var yourDateToGo = new Date(); //here you're making new Date object
+        yourDateToGo.setSeconds(yourDateToGo.getSeconds() + 90); //your're setting date in this object 1 day more from now
+        //you can change number of days to go by putting any number in place of 1
+
+        timing = setInterval( // you're making an interval - a thing, that is updating content after number of miliseconds, that you're writing after comma as second parameter
+            function () {
+
+                var currentDate = new Date().getTime(); //same thing as above
+                var timeLeft = yourDateToGo - currentDate; //difference between time you set and now in miliseconds
+
+                var days = Math.floor(timeLeft / (1000 * 60 * 60 * 24)); //conversion miliseconds on days
+                if (days < 10) days = "0" + days; //if number of days is below 10, programm is writing "0" before 9, that's why you see "09" instead of "9"
+                var hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)); //conversion miliseconds on hours
+                if (hours < 10) hours = "0" + hours;
+                var minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60)); //conversion miliseconds on minutes
+                if (minutes < 10) minutes = minutes;
+                var seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);//conversion miliseconds on seconds
+                if (seconds < 10) seconds = "0" + seconds;
+
+                document.getElementById("countdown").innerHTML = ""; // putting number of days, hours, minutes and seconds in div,
+                document.getElementById("countdown").innerHTML = '<i class="far fa-clock"></i> ' + minutes + "m " + seconds + "s"; // putting number of days, hours, minutes and seconds in div,
+                //which id is countdown
+
+                if (timeLeft <= 0) {
+                    clearInterval(timing);
+                    document.getElementById("countdown").innerHTML = "--:--"; //if there's no time left, programm in this 2 lines is clearing interval (nothing is counting now)
+                    if (document.getElementById('btnNext') != null)
+                        $('#btnNext').trigger('click');
+                    else {
+                        $('#finish').trigger('click');
+                        window.location.href = '/test/showresult'
+                    }
+                    //and you see "It's over" instead of time left
+                }
+            }, 1000);
+    }
+
+        $('#finish').click(function () {
+            window.location.href = '@Url.Action("ShowResult", "Test")';
+        });
+
+        function CheckRadio(listItem) {
+            if ($(listItem).prop('id') == 'listItem-1') {
+                $('#customRadio-1').prop('checked', true).trigger('change');
+                $('#listItem-1').css('background', '#ccc');
+                $('#listItem-2').css('background', '#fff');
+                $('#listItem-3').css('background', '#fff');
+                $('#listItem-4').css('background', '#fff');
+            }
+            else if ($(listItem).prop('id') == 'listItem-2') {
+                $('#customRadio-2').prop('checked', true).trigger('change');
+                $('#listItem-1').css('background', '#fff');
+                $('#listItem-2').css('background', '#ccc');
+                $('#listItem-3').css('background', '#fff');
+                $('#listItem-4').css('background', '#fff');
+            }
+            else if ($(listItem).prop('id') == 'listItem-3') {
+                $('#customRadio-3').prop('checked', true).trigger('change');
+                $('#listItem-1').css('background', '#fff');
+                $('#listItem-2').css('background', '#fff');
+                $('#listItem-3').css('background', '#ccc');
+                $('#listItem-4').css('background', '#fff');
+            }
+            else if ($(listItem).prop('id') == 'listItem-4') {
+                $('#customRadio-4').prop('checked', true).trigger('change');
+                $('#listItem-1').css('background', '#fff');
+                $('#listItem-2').css('background', '#fff');
+                $('#listItem-3').css('background', '#fff');
+                $('#listItem-4').css('background', '#ccc');
+            }
+        }
+
+    </script>
+}
+
+
+

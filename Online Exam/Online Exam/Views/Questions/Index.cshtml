@@ -1,0 +1,88 @@
+﻿@model IEnumerable<Online_Exam.Models.ViewModels.QuestionViewModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        <a class="btn btn-primary" href="@Url.Action("Create","Questions")"><i class="fa fa-plus"> Create New</i></a>
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <table id="questions-table" class="table table-hover table-striped table-bordered table-responsive" style="width:100%;background:white">
+            <thead>
+                <tr>
+                    @*<th>
+                        Category
+                    </th>*@
+                    <th>
+                        Question
+                    </th>
+                    <th>
+                        Option1
+                    </th>
+                    <th>
+                        Option2
+                    </th>
+                    <th>
+                        Option3
+                    </th>
+                    <th>
+                        Option4
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        @*<td>
+                            @Html.DisplayFor(modelItem => item.Category.Name)
+                        </td>*@
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Questions.Question)
+                        </td>
+                        @foreach (var option in item.Options)
+                        {
+                            if (option.IsAnswer)
+                            {
+                                <td style="color:lawngreen">
+                                    @Html.DisplayFor(modelItem => option.Option)
+                                </td>
+                            }
+                            else
+                            {
+                                <td style="color:orangered">
+                                    @Html.DisplayFor(modelItem => option.Option)
+                                </td>
+                            }
+                        }
+                        <td style="width:10%">
+                            <a class="btn btn-success btn-sm" title="Edit" href="@Url.Action("Edit",new { id = item.Questions.Id })"><i class="fa fa-edit"></i></a>
+                            @*<a class="btn btn-info btn-sm" title="Details" href="@Url.Action("Details",new { id = item.Questions.Id })"><i class="fa fa-bars"></i></a>*@
+                            <a class="btn btn-danger btn-sm" title="Delete" href="@Url.Action("Delete",new { id = item.Questions.Id })"><i class="fa fa-trash"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
+</div>
+<hr />
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function() {
+            $('#questions-table').DataTable();
+        });
+    </script>
+}

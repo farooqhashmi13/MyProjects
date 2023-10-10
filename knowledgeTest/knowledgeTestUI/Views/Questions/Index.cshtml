@@ -1,0 +1,356 @@
+﻿@model KnowledgeTestLibrary.Models.Question
+@{
+    Layout = "_LayoutAdmin";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <select class="form-select" id="subject-id">
+            @foreach (var subject in ViewBag.Subjects)
+            {
+                <option value="@subject.Id">@subject.Name</option>
+            }
+        </select>
+
+    </div>
+</div>
+
+<div class="modal fade" id="questionsModal" tabindex="-1" aria-labelledby="questionsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="questionsModalLabel">Question</h5>
+                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="SaveData" data-ajax="true" data-ajax-method="post" data-ajax-success="OnSuccess" autocomplete="off">
+                    <input asp-for="Id" type="hidden" />
+                    <input asp-for="Options[0].Id" type="hidden" />
+                    <input asp-for="Options[1].Id" type="hidden" />
+                    <input asp-for="Options[2].Id" type="hidden" />
+                    <input asp-for="Options[3].Id" type="hidden" />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-floating">
+                                <select asp-for="SubjectId" class="form-select">
+                                    @foreach (var subject in ViewBag.Subjects)
+                                    {
+                                        <option value="@subject.Id">@subject.Name</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="SubjectId" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-12">
+                            <div class="form-floating">
+                                <input asp-for="Statement" class="form-control" placeholder="Enter Subject Name" />
+                                <label asp-for="Statement" class="form-label">Question</label>
+                                <span asp-validation-for="Statement" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-8">
+                            <div class="form-floating">
+                                <input asp-for="Options[0].Statement" class="form-control" placeholder="Enter Option 1" />
+                                <label asp-for="Options[0].Statement" class="form-label">Option 1</label>
+                                <span asp-validation-for="Options[0].Statement" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="Options[0].IsAnswer" class="form-label me-2">Is Answer:</label>
+                            <input asp-for="Options[0].IsAnswer" type="radio" value="true" />
+                            <label asp-for="Options[0].IsAnswer" class="form-label">Yes</label>
+                            <input asp-for="Options[0].IsAnswer" type="radio" value="false" checked />
+                            <label asp-for="Options[0].IsAnswer" class="form-label">No</label>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-8">
+                            <div class="form-floating">
+                                <input asp-for="Options[1].Statement" class="form-control" placeholder="Enter Option 2" />
+                                <label asp-for="Options[1].Statement" class="form-label">Option 2</label>
+                                <span asp-validation-for="Options[1].Statement" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="Options[1].IsAnswer" class="form-label me-2">Is Answer:</label>
+                            <input asp-for="Options[1].IsAnswer" type="radio" value="true" />
+                            <label asp-for="Options[1].IsAnswer" class="form-label">Yes</label>
+                            <input asp-for="Options[1].IsAnswer" type="radio" value="false" checked />
+                            <label asp-for="Options[1].IsAnswer" class="form-label">No</label>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-8">
+                            <div class="form-floating">
+                                <input asp-for="Options[2].Statement" class="form-control" placeholder="Enter Option 3" />
+                                <label asp-for="Options[2].Statement" class="form-label">Option 3</label>
+                                <span asp-validation-for="Options[2].Statement" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="Options[2].IsAnswer" class="form-label me-2">Is Answer:</label>
+                            <input asp-for="Options[2].IsAnswer" type="radio" value="true" />
+                            <label asp-for="Options[2].IsAnswer" class="form-label">Yes</label>
+                            <input asp-for="Options[2].IsAnswer" type="radio" value="false" checked />
+                            <label asp-for="Options[2].IsAnswer" class="form-label">No</label>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-8">
+                            <div class="form-floating">
+                                <input asp-for="Options[3].Statement" class="form-control" placeholder="Enter Option 4" />
+                                <label asp-for="Options[3].Statement" class="form-label">Option 4</label>
+                                <span asp-validation-for="Options[3].Statement" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="Options[3].IsAnswer" class="form-label me-2">Is Answer:</label>
+                            <input asp-for="Options[3].IsAnswer" type="radio" value="true" />
+                            <label asp-for="Options[3].IsAnswer" class="form-label">Yes</label>
+                            <input asp-for="Options[3].IsAnswer" type="radio" value="false" checked />
+                            <label asp-for="Options[3].IsAnswer" class="form-label">No</label>
+                        </div>
+                    </div>
+                    <br />
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />
+<br />
+
+<table id="questions-dt" class="table table-bordered table-hover table-stripped table-sm" style="width:100%">
+    <thead class="bg-dark text-white">
+        <tr>
+            <th>Question</th>
+            <th>Option1</th>
+            <th>Option2</th>
+            <th>Option3</th>
+            <th>Option4</th>
+        </tr>
+    </thead>
+</table>
+
+@section scripts{
+
+<partial name="_ValidationScriptsPartial" />
+<script>
+
+
+    var rowData;
+    const myModalEl = document.getElementById('questionsModal');
+    const modal = new mdb.Modal(myModalEl);
+
+    var table = $('#questions-dt').dataTable({
+         dom: 'Bfrtip',
+                ajax: {
+                    "url": '/Questions/GetData',
+                    "type": 'post',
+                    "data": function (d) {
+                        d.SubjectId = $("#subject-id option:selected").val();
+                    },
+                },
+                "columns": [
+                    { "data": "statement" },
+                    {
+                        "data": "options.0",
+                        render: function (option) {
+                            if (option.isAnswer) {
+                                return ' <i class="fas fa-check"></i> ' + option.statement;
+                            }
+                            else {
+                                return option.statement;
+                            }
+                        }
+                    },
+                    {
+                        "data": "options.1",
+                        render: function (option) {
+                            if (option.isAnswer) {
+                                return ' <i class="fas fa-check"></i> ' + option.statement;
+                            }
+                            else {
+                                return option.statement;
+                            }
+                        }
+                    },
+                    {
+                        "data": "options.2",
+                        render: function (option) {
+                            if (option.isAnswer) {
+                                return ' <i class="fas fa-check"></i> ' + option.statement;
+                            }
+                            else {
+                                return option.statement;
+                            }
+                        }
+                    },
+                    {
+                        "data": "options.3",
+                        render: function (option) {
+                            if (option.isAnswer) {
+                                return ' <i class="fas fa-check"></i> ' + option.statement;
+                            }
+                            else {
+                                return option.statement;
+                            }
+                        }
+                    }
+                ],
+                buttons: [
+
+                    {
+                        text: '<i class="fas fa-plus"></i>',
+                        className:'btn btn-info btn-floating',
+                        action: function ( e, dt, node, config ) {
+
+                            $('#questionsModalLabel').text('Add new Question');
+
+                            $('#Id').val(0);
+                            $('#SubjectId').val($('#subject-id').val());
+                           
+                            $('#Options_0__Id').val(0);
+                            $('#Options_1__Id').val(0);
+                            $('#Options_2__Id').val(0);
+                            $('#Options_3__Id').val(0);
+                           
+                            $('#Statement').val('');
+                          
+                            $('#Options_0__Statement').val('');
+                            $('#Options_1__Statement').val('');
+                            $('#Options_2__Statement').val('');
+                            $('#Options_3__Statement').val('');
+
+                            $("input[id=Options_0__IsAnswer][value='false']").prop("checked", true);
+                            $("input[id=Options_1__IsAnswer][value='false']").prop("checked", true);
+                            $("input[id=Options_2__IsAnswer][value='false']").prop("checked", true);
+                            $("input[id=Options_3__IsAnswer][value='false']").prop("checked", true);
+                            
+                                    modal.show();
+                                }
+                    },
+                    {
+                        text: '<i class="fas fa-edit"></i>',
+                        className:'btn btn-success btn-floating',
+                        action: function ( e, dt, node, config ) {
+
+                            if(rowData == null){
+                                swal("Please select a row!");
+                                return;
+                            }
+
+                            $('#subjectsModalLabel').text('Edit Selected Question');
+                           
+                            $('#Id').val(rowData.id);
+                            $('#SubjectId').val(rowData.subjectId);
+                           
+                            $('#Options_0__Id').val(rowData.options[0].id);
+                            $('#Options_1__Id').val(rowData.options[1].id);
+                            $('#Options_2__Id').val(rowData.options[2].id);
+                            $('#Options_3__Id').val(rowData.options[3].id);
+                           
+                            $('#Statement').val(rowData.statement);
+                          
+                            $('#Options_0__Statement').val(rowData.options[0].statement);
+                            $('#Options_1__Statement').val(rowData.options[1].statement);
+                            $('#Options_2__Statement').val(rowData.options[2].statement);
+                            $('#Options_3__Statement').val(rowData.options[3].statement);
+
+                            $("input[id=Options_0__IsAnswer][value='" + rowData.options[0].isAnswer + "']").prop("checked", true);
+                            $("input[id=Options_1__IsAnswer][value='" + rowData.options[1].isAnswer + "']").prop("checked", true);
+                            $("input[id=Options_2__IsAnswer][value='" + rowData.options[2].isAnswer + "']").prop("checked", true);
+                            $("input[id=Options_3__IsAnswer][value='" + rowData.options[3].isAnswer + "']").prop("checked", true);
+
+                                    modal.show();
+                                }
+                    },
+                    {
+                        text: '<i class="fas fa-trash"></i>',
+                        className:'btn btn-danger btn-floating',
+                        action: function ( e, dt, node, config ) {
+
+                            if(rowData == null){
+                                swal("Please select a row!");
+                                return;
+                            }
+
+                            var obj = {
+                                'Id':rowData.id,
+                                'Statement':rowData.statement,
+                                'SubjectId':rowData.subjectId,
+                                'Options':rowData.options
+                            };
+
+                            swal({
+                              title: "Are you sure?",
+                              text: "Once deleted, you will not be able to recover this!",
+                              icon: "warning",
+                              buttons: true,
+                              dangerMode: true,
+                            })
+                            .then((willDelete) => {
+                                if (willDelete) {
+                                    $.ajax({
+                                        url:'/questions/DeleteData',
+                                        method:'delete',
+                                        data:obj,
+                                        success: function(res){
+                                            if(res.success){
+                                                swal("Subject Deleted!");
+                                                table.DataTable().ajax.reload();
+                                                rowData = null;
+                                            }
+                                            else{
+                                                swal("Something went wrong!");
+                                            }
+                                        }
+                                        });
+                                    }
+                                });
+                            }
+                    }
+                ]
+            });
+
+            $('#subject-id').change(function(){
+                table.DataTable().ajax.reload();
+            });
+
+    $('#questions-dt tbody').on( 'click', 'tr', function () {
+        if ( $(this).hasClass('selected') ) {
+
+            $(this).removeClass('selected');
+
+            rowData = null;
+
+        }
+        else {
+
+            table.$('tr.selected').removeClass('selected');
+
+            $(this).addClass('selected');
+
+            var row = this.closest('tr');
+
+            rowData = table.DataTable().row($(this)).data();
+
+        }
+    });
+
+     function OnSuccess(res){
+               swal("Success!");
+                table.DataTable().ajax.reload();
+                rowData = null;
+                modal.toggle();
+            }
+
+
+</script>
+}

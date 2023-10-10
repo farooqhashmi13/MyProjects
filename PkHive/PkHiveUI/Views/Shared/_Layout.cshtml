@@ -1,0 +1,295 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google ads -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6268210419519183"
+            crossorigin="anonymous"></script>
+
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7SBLQTQ56X"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-7SBLQTQ56X');
+    </script>
+
+    <link rel="canonical" src="@ViewData["url"]" />
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+    <meta name="title" content="@ViewData["Title"]">
+    <meta name="description" content="@ViewData["Description"]">
+    <meta name="keywords" content="NTS, PPSC, FPSC, FIA, @ViewData["KeyWord"]">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="language" content="English">
+    <meta name="ahrefs-site-verification" content="30e67711c3ae4db85ec4d8ed93cf67488d637c8971c6d536894e5ef896399cdc">
+
+    <meta property="og:title" content="PKHIVE.com">
+    <meta property="og:site_name" content="PKHIVE.com">
+    <meta property="og:url" content="@ViewData["url"]" />
+    <meta property="og:description" content="PkHive is a great site for job seekers. Job seekers can find all types of jobs in one place. No need to go to each site one by one. PkHive checks all sites one by one and gathers a list of jobs available for you. So, all you need to do is log on to PkHive.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="@ViewData["url-img"]">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@@PKHIVE">
+    <meta name="twitter:title" content="PKHIVE">
+    <meta name="twitter:description" content="PkHive is a great site for job seekers. Job seekers can find all types of jobs in one place. No need to go to each site one by one. PkHive checks all sites one by one and gathers a list of jobs.">
+    <meta name="twitter:image" content="https://pkhive.com/img/og-image.png">
+
+    <meta name="p:domain_verify" content="e8332116df779f39248323ca8efddf00" />
+
+    <title>@ViewData["Title"]</title>
+
+    <!-- add favicon link -->
+    <link rel="icon" href="~/og-img/icon.png"
+          type="image/x-icon">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="~/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="~/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="~/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="~/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+    <!-- Variables CSS Files. Uncomment your preferred color scheme -->
+    <link href="~/assets/css/variables.css" rel="stylesheet">
+    <!-- Template Main CSS File -->
+    <link href="~/assets/css/main.css" rel="stylesheet">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+<body class="h-100">
+    @{
+        var controller = ViewContext.RouteData.Values["Controller"]?.ToString().ToLower();
+        var action = ViewContext.RouteData.Values["Action"]?.ToString().ToLower();
+    }
+
+    <!-- ======= Header ======= -->
+    <header id="header" class="header fixed-top" data-scrollto-offset="0">
+        <div class="container d-flex align-items-center justify-content-between">
+
+            <a href="/" class="logo d-flex align-items-center scrollto me-auto me-lg-0">
+                <!-- Uncomment the line below if you also wish to use an image logo -->
+                <!-- <img src="assets/img/logo.png" alt=""> -->
+                <h2>PKHIVE</h2>
+            </a>
+
+            <nav id="navbar" class="navbar">
+                <ul>
+                    <li><a class="nav-link @(controller == "home" && action == "index" ? "active" : "")" href="/">Home</a></li>
+                    <li><a class="nav-link @(controller == "jobs" && action == "nts" ? "active" : "")" href="/nts-jobs">NTS Jobs</a></li>
+                    <li class="dropdown">
+                        <a href="#"><span>PSC Jobs</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+                        <ul>
+                            <li>
+                                <a class="dropdown-item" href="/fpsc-jobs">FPSC</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/ppsc-jobs">PPSC</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/spsc-jobs">SPSC</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/kppsc-jobs">KPPSC</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/bpsc-jobs">BPSC</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#"><span>Jobs By Location</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+                        <ul>
+                            <li>
+                                <a class="dropdown-item" href="/govt-jobs-in-islamabad">ISB</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/punjab-govt-jobs">Punjab</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/sindh-govt-jobs">Sindh</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/kpk-govt-jobs">KPK</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/balochistan-jobs">Balochistan</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#"><span>Jobs By Institution</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+                        <ul>
+                            <li>
+                                <a class="dropdown-item" href="/join-asf">ASF</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/fbr-jobs">FBR</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/fia-online-apply">FIA</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/nab-jobs">NAB</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/nadra-jobs">NADRA</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/ministry-of-climate-change-jobs">MOCC</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a class="nav-link @(controller == "home" && action == "contact" ? "active" : "")" href="/contact">Contact Us</a></li>
+                    <li><a class="nav-link @(controller == "home" && action == "aboutus" ? "active" : "")" href="/about">About Us</a></li>
+                </ul>
+                <i class="bi bi-list mobile-nav-toggle d-none"></i>
+            </nav><!-- .navbar -->
+        </div>
+    </header><!-- End Header -->
+    @if (controller == "home" && action == "index")
+    {
+        <section id="hero-static" class="hero-static d-flex align-items-center">
+            <div class="container d-flex flex-column justify-content-center align-items-center text-center position-relative">
+                <h2>Welcome to <span>PKHIVE</span></h2>
+                <p>Find jobs-related news and information in one place</p>
+                <div class="d-flex">
+                    <a href="#jobs" class="btn-get-started scrollto">Find Jobs</a>
+                </div>
+            </div>
+        </section>
+    }
+
+    <main class="my-5">
+
+        @if (controller == "home" && action == "index")
+        {
+            @RenderBody()
+        }
+        else
+        {
+            <div class="container">
+                <section class="py-5">
+                    @RenderBody()
+                </section>
+            </div>
+        }
+    </main><!-- End #main -->
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
+
+        <div class="footer-content">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-lg-6 col-md-6">
+                        <div class="footer-info">
+                            <h3>PKHIVE</h3>
+                            <p>
+                                Pkhive is a greate website for job seekers. All job types can be found in one location for job searchers. For your convenience, we compile a collection of the most recent job-related news and details. To ensure you don't miss the new chance, we also provide notifications when the new jobs are announced.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 footer-links">
+                        <h4>Links</h4>
+                        <ul>
+                            <li><i class="bi bi-chevron-right"></i> <a href="/">Home</a></li>
+                            <li><i class="bi bi-chevron-right"></i> <a href="/about">About us</a></li>
+                            <li><i class="bi bi-chevron-right"></i> <a href="/contact">Contact Us</a></li>
+                            <li><i class="bi bi-chevron-right"></i> <a href="/terms">Terms of service</a></li>
+                            <li><i class="bi bi-chevron-right"></i> <a href="/privacy">Privacy policy</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 footer-links">
+                        <h4>Links</h4>
+                        <ul>
+                            <li><i class="bi bi-chevron-right"></i> <a href="/nts-jobs">NTS Jobs</a></li>
+                            <li><i class="bi bi-chevron-right"></i> <a href="/fpsc-jobs">FPSC Jobs</a></li>
+                            <li><i class="bi bi-chevron-right"></i> <a href="/ppsc-jobs">PPSC Jobs</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-legal text-center">
+            <div class="container d-flex flex-column flex-lg-row justify-content-center justify-content-lg-between align-items-center">
+
+                <div class="d-flex flex-column align-items-center align-items-lg-start">
+                    <div class="copyright">
+                        &copy; Copyright <strong><span>pkhive.com</span></strong>. All Rights Reserved
+                    </div>
+                    <div class="credits">
+                        <!-- All the links in the footer should remain intact. -->
+                        <!-- You can delete the links only if you purchased the pro version. -->
+                        <!-- Licensing information: https://bootstrapmade.com/license/ -->
+                        <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/herobiz-bootstrap-business-template/ -->
+                        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+                    </div>
+                </div>
+
+                <div class="social-links order-first order-lg-last mb-3 mb-lg-0">
+                    <a href="https://www.facebook.com/pkhive.com.pk/" target="_blank" class="facebook"><i class="bi bi-facebook"></i></a>
+                    <a href="https://www.pinterest.com/pkhiveofficial" target="_blank" class="pinterest"><i class="bi bi-pinterest"></i></a>
+                </div>
+
+            </div>
+        </div>
+
+    </footer><!-- End Footer -->
+
+
+
+    <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+    @*<div id="preloader"></div>*@
+
+    <!-- Vendor JS Files -->
+    <script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/vendor/aos/aos.js"></script>
+    <script src="~/assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="~/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="~/assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="~/assets/vendor/php-email-form/validate.js"></script>
+
+    <!-- Template Main JS File -->
+    <script src="~/assets/js/main.js"></script>
+
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/lib/sweetalert/sweetalert.min.js"></script>
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+
+    <!--  Live  -->
+    <!-- start webpushr tracking code -->
+    <script>
+        (function(w, d, s, id) {
+            if (typeof (w.webpushr) !== 'undefined') return; w.webpushr = w.webpushr || function() { (w.webpushr.q = w.webpushr.q || []).push(arguments) }; var js, fjs = d.getElementsByTagName(s)[0]; js = d.createElement(s); js.id = id; js.async = 1; js.src = "https://cdn.webpushr.com/app.min.js";
+            fjs.parentNode.appendChild(js);
+        }(window, document, 'script', 'webpushr-jssdk'));
+        webpushr('setup', { 'key': 'BIUYTYoLCsrZE3vABrf7HocBHo1GKHqLywlTz4vUQZcrT5PY_YJCzLI1tp5IpCh5Sp7lyw6k9oxpIpjm_iB7Im4' });</script>
+
+    <!--  Local  -->
+    @*<script>
+    (function(w, d, s, id) {
+    if (typeof (w.webpushr) !== 'undefined') return; w.webpushr = w.webpushr || function() { (w.webpushr.q = w.webpushr.q || []).push(arguments) }; var js, fjs = d.getElementsByTagName(s)[0]; js = d.createElement(s); js.id = id; js.async = 1; js.src = "https://cdn.webpushr.com/app.min.js";
+    fjs.parentNode.appendChild(js);
+    }(window, document, 'script', 'webpushr-jssdk'));
+    webpushr('setup', { 'key': 'BLoMOd6OiXGOkIFd3E0CYxoL5rJ3Ben1sdg3FtmEMHZzGc__D17VZIdxcSYMDrjArXuNKmPP4ZTTZj5qfqsLvoE' });</script>*@
+    <!-- end webpushr tracking code -->
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

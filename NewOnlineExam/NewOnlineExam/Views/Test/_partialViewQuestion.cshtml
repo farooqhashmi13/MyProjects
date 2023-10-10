@@ -1,0 +1,56 @@
+﻿@model PagedList.IPagedList<NewOnlineExam.Models.ViewModels.QuestionViewModel>
+@using PagedList.Mvc;
+@{
+    var percentage = (Model.PageNumber - 1) * 6.67;
+}
+
+<input id="txtCurrentQuestion" value="@Model.First().QuestionNo" type="hidden" />
+<input id="txtTotalQuestions" value="@Model.PageCount" type="hidden" />
+<input id="txtQuestionId" value="@Model.First().Questions.Id" type="hidden" />
+<input id="txtOptionId" value="@Model.First().Questions.Id" type="hidden" />
+<input id="txtRemainingQs" value="" type="hidden" />
+
+<div class="card">
+    <div class="card-body" style="background:rgba(0,0,0,.03)">
+
+        <h5><strong>Q#@Model.First().QuestionNo:</strong> @Model.First().Questions.Question</h5><hr />
+       
+        @{int x = 0;
+            foreach (var option in Model.First().Options)
+            {
+                x++;
+                <div id="listItem-@x" class="option p-3" onclick="CheckRadio(this)">
+                    <div class="custom-control custom-radio">
+                        <input type="radio" id="customRadio-@x" name="radio-option" value=@option.Id class="custom-control-input" />
+                        <label class="custom-control-label" for="customRadio-@x">@option.Option</label>
+                    </div>
+                </div>
+            }
+        }
+        <div class="progress md-progress" style="height:5px">
+            <div class="progress-bar" role="progressbar" style="width: @percentage%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <div class="mt-2 float-right">
+
+            @if (Model.PageNumber != Model.PageCount)
+            {
+                @Ajax.ActionLink("Next", "PageIndex",
+                              new { page = Model.PageNumber + 1 },
+                              new AjaxOptions()
+                              {
+                                  HttpMethod = "Get",
+                                  AllowCache = false,
+                                  InsertionMode = InsertionMode.Replace,
+                                  UpdateTargetId = "question-wrapper"
+                              },
+                              new { @class = "btn btn-default", @id = "btnNext", onclick = "PostQuestion()" })
+                <a href="@Url.Action("ShowResult","Test")" id="finish" class="btn btn-default" onclick="PostQuestion()">Finish Now</a>
+            }
+            else
+            {
+                <a href="@Url.Action("ShowResult","Test")" id="finish" class="btn btn-default" onclick="PostQuestion()">Finish</a>
+            }
+
+        </div>
+    </div>
+</div>

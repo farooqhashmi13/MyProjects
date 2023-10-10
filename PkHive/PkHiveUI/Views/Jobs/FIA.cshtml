@@ -1,0 +1,168 @@
+﻿@model IEnumerable<PkHiveLibrary.Models.JobViewModel>
+
+@{
+    ViewData["Title"] = "FIA Online Apply, FIA Job Vacancies, and Career Opportunities";
+    ViewData["Description"] = "FIA online apply, vacancies, and notifications for all FIA jobs in Pakistan. Find out the latest FIA  jobs, and employment opportunities.";
+    ViewData["KeyWord"] = "FIA Online Apply";
+    ViewData["url"] = "https://pkhive.com/fia-online-apply";
+    ViewData["url-img"] = "https://pkhive.com/og-img/FIA.png";
+    int i = 1;
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p class="fs-5">
+    Federal Investigation Agency (FIA) in addition to investigating federal crimes such as cybercrime, money laundering, and terrorism financing, is also responsible for enforcing federal laws. Since the FIA needs a team of professionals to accomplish its responsibilities, it announces openings as soon as a position becomes available in order to fill the vacancies.
+</p>
+
+<p><a href="#jobs" class="fs-5">To FIA online apply see the list of the latest available jobs</a></p>
+
+<p class="fs-5">
+    In Pakistan, all employee benefits enjoyed by government employees can also be availed by members of the FIA. Interested candidates can apply for FIA jobs from all over the country and then if they are eligible they will have to sit for written examinations and interviews before they are chosen for the positions on offer.
+</p>
+
+<section id="jobs">
+    @if (Model.Count() == 0)
+    {
+        <p class="fs-5 mt-5 fw-bold">No jobs available.</p>
+        <p class="fs-5 mt-5">For related jobs information. Click <a href="/">here</a></p>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped caption-top">
+                <caption><h3><strong>Jobs List</strong></h3></caption>
+                <thead>
+                    <tr>
+                        <th>Job Title</th>
+                        <th>Vacancies</th>
+                        <th>Last Date</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Job.Title</td>
+                            <td>@item.Job.Vacancies</td>
+                            <td>@item.Job.LastDate.ToString("dd-MMM-yyyy")</td>
+                            <td class="text-center">
+                                <button class="btn btn-sm bg-primary text-white rounded-5 btn-jobinfo"
+                                data-vacancies="@item.Job.Vacancies"
+                                data-department="@item.Job.Department"
+                                data-posteddate="@item.Job.PostedDate.ToString("dd-MMM-yyyy")"
+                                data-lastdate="@item.Job.LastDate.ToString("dd-MMM-yyyy")"
+                                data-qualifications="@item.Job.Qualification"
+                                data-experience="@item.Job.Experience"
+                                data-payscale="@item.Job.PayScale"
+                                data-description="@item.Job.Description"
+                                data-applylink="@item.Job.ApplyLink"
+                                title="Job Details">
+                                    <i class="bi bi-list"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</section>
+
+<div class="modal fade" id="job-modal" tabindex="-1" aria-labelledby="job-modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="job-modalLabel">Job Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <dl>
+                    <dt>Department</dt>
+                    <dd id="dd-department"></dd>
+                    <dt>Vacancies</dt>
+                    <dd id="dd-vacancies"></dd>
+                    <dt>Posted Date</dt>
+                    <dd id="dd-posteddate"></dd>
+                    <dt>Last Date</dt>
+                    <dd id="dd-lastdate"></dd>
+                    <dt>Pay Scale</dt>
+                    <dd id="dd-payscale"></dd>
+                    <dt>Qualifications</dt>
+                    <dd id="dd-qualifications"></dd>
+                    <dt>Experience</dt>
+                    <dd id="dd-experience"></dd>
+                    <dt>Description</dt>
+                    <dd id="dd-description"></dd>
+                </dl>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <a href="#" class="btn btn-primary btn-apply" target="_blank">Apply Now</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $('.btn-jobinfo').on('click', function() {
+            $('#dd-payscale').text($(this).data('payscale'));
+            $('#dd-vacancies').text($(this).data('vacancies'));
+            $('#dd-department').text($(this).data('department'));
+            $('#dd-experience').text($(this).data('experience'));
+            $('#dd-qualifications').text($(this).data('qualifications'));
+            $('#dd-posteddate').text($(this).data('posteddate'));
+            $('#dd-lastdate').text($(this).data('lastdate'));
+            $('#dd-description').text($(this).data('description'));
+            $('.btn-apply').attr('href', $(this).data('applylink'));
+            $("#job-modal").modal("toggle");
+        });
+    </script>
+
+        @foreach (var item in Model)
+    {
+        <script type="application/ld+json">
+            {
+              "@@context" : "https://schema.org/",
+              "@@type" : "JobPosting",
+              "title" : "@item.Job.Title",
+              "description" : "<p>@item.Job.Description</p>",
+              "identifier": {
+                "@@type": "PropertyValue",
+                "name": "pkhive.com",
+                "value": "@item.Job.Id"
+              },
+              "datePosted" : "@item.Job.PostedDate.ToString("yyyy-MM-dd")",
+              "validThrough" : "@item.Job.PostedDate.ToString("yyyy-MM-ddThh:mm")",
+              "employmentType" : "FULL_TIME",
+              "hiringOrganization" : {
+                "@@type" : "Organization",
+                "name" : "FIA",
+                "sameAs" : "https://www.fia.gov.pk/"
+              },
+              "jobLocation": {
+              "@@type": "Place",
+                "address": {
+                "@@type": "PostalAddress",
+                "addressLocality": "@item.Locations.First().City",
+                "addressRegion": "@item.Locations.First().Name",
+                "postalCode": "@item.Locations.First().ZipCode",
+                "addressCountry": "Pakistan"
+                }
+              },
+              "baseSalary": {
+                "@@type": "MonetaryAmount",
+                "currency": "PKR",
+                 "value": {
+                  "@@type": "QuantitativeValue",
+                  "minValue": "@item.Job.MinSalary",
+                  "maxValue": "@item.Job.MaxSalary",
+                  "unitText": "Monthly"
+                }
+              }
+            }
+        </script>
+    }
+}

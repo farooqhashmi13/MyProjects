@@ -1,0 +1,85 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "jquery@3.6.1",
+      "destination": "wwwroot/jquery/"
+    },
+    {
+      "library": "font-awesome@6.2.0",
+      "destination": "wwwroot/font-awesome/"
+    },
+    {
+      "library": "bootstrap@5.2.1",
+      "destination": "wwwroot/",
+      "files": [
+        "js/bootstrap.min.js",
+        "css/bootstrap-grid.css",
+        "css/bootstrap-grid.css.map",
+        "css/bootstrap-grid.min.css",
+        "css/bootstrap-grid.min.css.map",
+        "css/bootstrap-grid.rtl.css",
+        "css/bootstrap-grid.rtl.css.map",
+        "css/bootstrap-grid.rtl.min.css",
+        "css/bootstrap-grid.rtl.min.css.map",
+        "css/bootstrap-reboot.css",
+        "css/bootstrap-reboot.css.map",
+        "css/bootstrap-reboot.min.css",
+        "css/bootstrap-reboot.min.css.map",
+        "css/bootstrap-reboot.rtl.css",
+        "css/bootstrap-reboot.rtl.css.map",
+        "css/bootstrap-reboot.rtl.min.css",
+        "css/bootstrap-reboot.rtl.min.css.map",
+        "css/bootstrap-utilities.css",
+        "css/bootstrap-utilities.css.map",
+        "css/bootstrap-utilities.min.css",
+        "css/bootstrap-utilities.min.css.map",
+        "css/bootstrap-utilities.rtl.css",
+        "css/bootstrap-utilities.rtl.css.map",
+        "css/bootstrap-utilities.rtl.min.css",
+        "css/bootstrap-utilities.rtl.min.css.map",
+        "css/bootstrap.css",
+        "css/bootstrap.css.map",
+        "css/bootstrap.min.css",
+        "css/bootstrap.min.css.map",
+        "css/bootstrap.rtl.css",
+        "css/bootstrap.rtl.css.map",
+        "css/bootstrap.rtl.min.css",
+        "css/bootstrap.rtl.min.css.map",
+        "js/bootstrap.bundle.js",
+        "js/bootstrap.bundle.js.map",
+        "js/bootstrap.bundle.min.js",
+        "js/bootstrap.bundle.min.js.map",
+        "js/bootstrap.esm.js",
+        "js/bootstrap.esm.js.map",
+        "js/bootstrap.esm.min.js",
+        "js/bootstrap.esm.min.js.map",
+        "js/bootstrap.js",
+        "js/bootstrap.js.map",
+        "js/bootstrap.min.js.map"
+      ]
+    },
+    {
+      "library": "datatables@1.10.21",
+      "destination": "wwwroot/datatables/",
+      "files": [
+        "js/jquery.dataTables.min.js",
+        "js/dataTables.bootstrap.min.js",
+        "css/dataTables.bootstrap.min.css"
+      ]
+    },
+    {
+      "library": "jquery-validation-unobtrusive@4.0.0",
+      "destination": "wwwroot/jquery-validation-unobtrusive/"
+    },
+    {
+      "library": "jquery-ajax-unobtrusive@3.2.6",
+      "destination": "wwwroot/lib/jquery-ajax-unobtrusive/"
+    },
+    {
+      "library": "sweetalert@2.1.2",
+      "destination": "wwwroot/lib/sweetalert/"
+    }
+  ]
+}

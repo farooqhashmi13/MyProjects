@@ -1,0 +1,118 @@
+﻿@model PagedList.IPagedList<Online_Exam.Models.ViewModels.QuestionViewModel>
+@using PagedList.Mvc;
+@{
+    //var no = Model.PageCount - (Model.PageNumber + 1);
+}
+
+<input id="txtCurrentQuestion" value="@Model.PageNumber" type="hidden" />
+<input id="txtTotalQuestions" value="@Model.PageCount" type="hidden" />
+<input id="txtQuestionId" value="@Model.First().Questions.Id" type="hidden" />
+<input id="txtOptionId" value="@Model.First().Questions.Id" type="hidden" />
+<input id="txtRemainingQs" value="" type="hidden" />
+
+<div class="list-group" style="height:100%">
+    <div class="list-group-item active">Q#@Model.PageNumber: @Model.First().Questions.Question</div>
+    @{int x = 0;
+        foreach (var option in Model.First().Options)
+        {
+            x++;
+            if (Model.First().IsAnswered)
+            {
+                <div class="list-group-item" id="listItem-@x">
+                    <div class="custom-control custom-radio">
+                        <input type="radio" id="customRadio-@x" name="Radio-@Model.PageNumber" value=@option.Id onchange="Submit(this)" class="custom-control-input" disabled="disabled" />
+                        <label class="custom-control-label" for="customRadio-@x">@option.Option</label>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="list-group-item" id="listItem-@x">
+                    <div class="custom-control custom-radio">
+                        <input type="radio" id="customRadio-@x" name="Radio-@Model.PageNumber" value=@option.Id onchange="Submit(this)" class="custom-control-input" />
+                        <label class="custom-control-label" for="customRadio-@x">@option.Option</label>
+                    </div>
+                </div>
+            }
+        }
+    }
+    @*<div class="list-group-item" style="border-bottom:none;border-left:none;border-right:none">*@
+    <div>
+        @*<div class="row">
+                <div class="col-md-12">
+
+                    @Html.PagedListPager(
+                    Model,
+                    page => Url.Action("PageIndex", new { page = page }),
+                    PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing
+                    (new PagedListRenderOptions()
+                    {
+                        DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+                        DisplayLinkToLastPage = PagedListDisplayMode.Never,
+                        DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                        DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                        UlElementClasses = new[] { "pagination" },
+                        LiElementClasses = new List<string> { "page-item", "page-link" },
+                        MaximumPageNumbersToDisplay = 0,
+                        LinkToFirstPageFormat = "<<",
+                        LinkToPreviousPageFormat = "Previous",
+                        LinkToNextPageFormat = " Next",
+                        LinkToLastPageFormat = ">>",
+                    },
+                    new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "question-wrapper" })
+                    )
+                </div>
+            </div>*@
+        @if (Model.PageNumber != 1)
+        {
+            @Ajax.ActionLink("Previous", "PageIndex",
+                              new { page = Model.PageNumber - 1 },
+                              new AjaxOptions()
+                              {
+                                  HttpMethod = "Get",
+                                  AllowCache = false,
+                                  InsertionMode = InsertionMode.Replace,
+                                  UpdateTargetId = "question-wrapper"
+                              },
+                              new { @class = "btn btn-primary", @id = "btnPrevious", @onclick = "Previous()" })
+        }
+
+        @if (Model.PageNumber != Model.PageCount)
+        {
+            @Ajax.ActionLink("Next", "PageIndex",
+                          new { page = Model.PageNumber + 1 },
+                          new AjaxOptions()
+                          {
+                              HttpMethod = "Get",
+                              AllowCache = false,
+                              InsertionMode = InsertionMode.Replace,
+                              UpdateTargetId = "question-wrapper"
+                          },
+                          new { @class = "btn btn-primary", @id = "btnNext", @onclick = "Next()" })
+            @*<a href="@Url.Action("ShowResult","Test")" id="finish" class="btn btn-danger">End Exam</a>*@
+        }
+        else
+        {
+            <a href="@Url.Action("ShowResult","Test")" id="finish" class="btn btn-primary">Finish</a>
+        }
+
+    </div>
+</div>
+@*</div>*@
+<script>
+    function Next() {
+        $('#Q'+@(Model.PageNumber)).removeClass('active');
+        $('#Q' +@(Model.PageNumber+1)).addClass('active');
+        $('#qList').scrollTop($('#Q' +@(Model.PageNumber+1)).offset().top - $('#qList').offset().top);
+    }
+    function Previous() {
+        $('#Q'+@(Model.PageNumber)).removeClass('active');
+        $('#Q'+@(Model.PageNumber-1)).addClass('active');
+        $('#qList').scrollTop($('#Q' +@(Model.PageNumber-1)).offset().top - $('#qList').offset().top);
+    }
+    function PageClick(pageLink) {
+        $('#Q'+@(Model.PageNumber)).removeClass('active');
+        $(pageLink).addClass('active');
+    }
+
+</script>

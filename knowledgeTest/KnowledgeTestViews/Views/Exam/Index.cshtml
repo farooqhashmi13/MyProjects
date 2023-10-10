@@ -1,0 +1,37 @@
+﻿
+<br />
+<section>
+    <div class="card border shadow-none rounded-0">
+        <div class="card-header">
+            <div class="card-title">Select a subject</div>
+        </div>
+        <div class="card-body">
+            <form asp-action="Start" class="form">
+                <div class="row mb-2">
+                    @foreach (var subject in ViewBag.Subjects)
+                    {
+                        <div class="col-md-3 d-grid mb-2">
+                            <input type="radio" class="btn-check" name="Id" id="@subject.Id" value="@subject.Id" autocomplete="off">
+                            <label class="btn btn-outline-primary btn-lg" for="@subject.Id">@subject.Name</label>
+                        </div>
+                    }
+                </div>
+                <input type="submit" value="Next" class="btn btn-info float-end" />
+            </form>
+        </div>
+    </div>
+</section>
+
+@section scripts{
+    <script>
+        $('.form').on('submit', function(e) {
+
+            if (!$('input[name=Id]').prop('checked')) {
+                e.preventDefault();
+                alert('Please select a subject');
+            }
+
+        });
+    </script>
+}
+

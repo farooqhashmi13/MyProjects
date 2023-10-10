@@ -1,0 +1,79 @@
+﻿@model PkHiveUI.Models.ContactViewModel
+@{
+    ViewData["Title"] = "Contact Us";
+    ViewData["url"] = "https://pkhive.com/contact";
+}
+
+
+
+<!-- Contact form-->
+<section id="contact" class="contact p-5">
+    <div class="card">
+        <div class="card-body p-5">
+            <h1>@ViewData["Title"]</h1><br />
+            <form asp-action="Contact" method="post" role="form" data-ajax="true" data-ajax-success="success">
+        <!-- Name input -->
+        <div class="form-outline mb-4">
+            <input asp-for="FullName" class="form-control form-control-lg">
+            <label asp-for="FullName" class="form-label"></label>
+            <span asp-validation-for="FullName" class="text-danger"></span>
+        </div>
+
+        <!-- Email input -->
+        <div class="form-outline mb-4">
+            <input asp-for="Email" class="form-control form-control-lg">
+            <label asp-for="Email" class="form-label"></label>
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <!-- Phone Number input -->
+        <div class="form-outline mb-4">
+            <input asp-for="PhoneNumber" class="form-control form-control-lg">
+            <label asp-for="PhoneNumber" class="form-label"></label>
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+
+        <!-- Subject input -->
+        <div class="form-outline mb-4">
+            <input asp-for="Subject" class="form-control form-control-lg">
+            <label asp-for="Subject" class="form-label"></label>
+            <span asp-validation-for="Subject" class="text-danger"></span>
+        </div>
+
+        <!-- Message input -->
+        <div class="form-outline mb-4">
+            <textarea asp-for="Message" class="form-control form-control-lg" rows="5"></textarea>
+            <label asp-for="Message" class="form-label"></label>
+            <span asp-validation-for="Message" class="text-danger"></span>
+        </div>
+
+        <!-- Submit button -->
+        <button type="submit" class="btn btn-primary btn-block mb-4">Send</button>
+    </form>
+        </div>
+    </div>
+    
+</section>
+@section scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        function success(res) {
+            if (res.success) {
+                swal("Success!", "Thankyou for contacting with us!", "success");
+                $('#FullName').val('');
+                $('#FullName').trigger('change');
+                $('#PhoneNumber').val('');
+                $('#Email').val('');
+                $('#Subject').val('');
+                $('#Message').val('');
+                $('.loading').removeClass('d-block');
+            }
+            else {
+                swal("Error!", "Something went wrong!", "error");
+            }
+        }
+    </script>
+    }

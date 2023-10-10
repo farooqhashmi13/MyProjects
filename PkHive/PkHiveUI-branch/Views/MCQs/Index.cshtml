@@ -1,0 +1,13 @@
+﻿@model IEnumerable<PkHiveLibrary.Models.Subject>
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@foreach (var subject in Model)
+{
+    <a href="@Url.Action("Index", "Exam",  new{subjectId = subject.Id} )">@subject.Name</a><br />
+}
+

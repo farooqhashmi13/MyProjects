@@ -1,0 +1,225 @@
+﻿@model PagedList.IPagedList<Online_Exam.Models.ViewModels.QuestionViewModel>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@{
+    ViewBag.Title = "Start Test";
+}
+
+<style>
+    /*.pagination {
+      display: inline-block;
+    }*/
+
+    .page-link {
+        padding: 8px 16px;
+        border: 1px solid #ddd;
+    }
+
+    /*.disabled {
+        background-color:#ccc;
+    }*/
+    /*.page-link:active {
+      background-color: #4CAF50;
+      color: white;
+      border: 1px solid #4CAF50;
+    }
+
+    .page-link:hover:not(.active) {background-color: #ddd;}*/
+    /*.paging_link:active {
+            display: inline-block;
+            padding: 0 5px; /*top margin is 0px right margin is 5px bottom margin is --px left margin is --px
+        }*/
+
+    .listblock ul li a {
+        padding: 5px 30px 5px 10px;
+        display: block;
+    }
+
+    .listblock ul li a:hover {
+        background: transparent 3px 170px;
+    }
+
+</style>
+
+<div class="all-page-title">
+
+    <div class="container text-center">
+        @if (ViewBag.category == "NTS")
+        {
+            <div id="nts">
+                <h1>NTS</h1>
+                <select>
+                    <option></option>
+                </select>
+                @*<table class="table table-bordered text-white text-center" style="margin-left: 3%;">
+                        <thead>
+                            <tr>
+                                <th>English</th>
+                                <th>Analytical</th>
+                                <th>Quantitative</th>
+                                <th>Subject</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>20%</td>
+                                <td>15%</td>
+                                <td>15%</td>
+                                <td>50%</td>
+                            </tr>
+                        </tbody>
+                    </table>*@
+            </div>
+        }
+        else
+        {
+            <div id="custom" class="text-center">
+                <h1>Custom Category</h1>
+                <p>@*Subject: 100%*@</p>
+            </div>
+        }
+
+        <input type="button" id="btnStartTest" class="btn btn-primary btn-lg aligncenter" value="Start Now" />
+        <input type="button" id="finish" class="btn btn-primary btn-lg aligncenter" value="Finish Now" style="display:none" />
+        @*<a href="" id="finish" class="btn btn-primary btn-lg" style="display: none;">Finish Now</a>*@
+    </div>
+</div>
+
+<div class="row m-2" id="mainContainer" style="display:none">
+    <div id="qList" class="col-md-2 list-group text-md-center" style="overflow-y: scroll; max-height:250px">
+        @for (int i = 1; i <= Model.PageCount; i++)
+        {
+            @Ajax.ActionLink("Question " + i, "PageIndex",
+              new { page = i },
+              new AjaxOptions()
+              {
+                  HttpMethod = "Get",
+                  AllowCache = false,
+                  InsertionMode = InsertionMode.Replace,
+                  UpdateTargetId = "question-wrapper"
+              },
+              new { @class = "list-group-item list-group-item-action", @id = "Q" + i, @onclick = "PageClick(this)" })
+        }
+    </div>
+    <div id="question-wrapper" class="col-md-6">
+        @Html.Partial("_partialViewQuestion", Model)
+    </div>
+    <div class="col-md-4 mt-3">
+        <div class="card">
+            <div class="card-body" style="background:white">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h4 class="card-title">Remaining Time:-</h4>
+                        <hr />
+                        <h6 class="card-subtitle mb-2">
+                            Remaining Questions:-
+                        </h6>
+                        <hr />
+                        <h6 class="card-subtitle mb-2">
+                            Question Answered:-
+                        </h6>
+                        <hr />
+
+                        <h6 class="card-subtitle mb-2">
+                            Right Answers:-
+                        </h6>
+                    </div>
+                    <div class="col-md-4">
+                        <h4 class="card-title"><span id="testTime"></span></h4>
+                        <hr />
+                        <h6 id="remainingQs" class="card-subtitle mb-2"></h6>
+                        <hr />
+                        <h6 id="answeredQs" class="card-subtitle mb-2"></h6>
+                        <hr />
+                        <h6 id="reightQs" class="card-subtitle mb-2"></h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+@section Scripts
+{
+    <script>
+
+        $('#Q1').addClass('active');
+
+        function Submit(radio) {
+            var name = $(radio).attr('name');
+            $('input[name=' + name + ']').attr("disabled",true);
+            $("#answeredQs").text(parseInt($("#answeredQs").text()) + 1);
+            $('.page-link.page-item.active').css('background-color', '#ccc');
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("PostQuestion","Test")",
+                data: { //Passing data
+                    QuestionId: $("#txtQuestionId").val(), //Reading text box values using Jquery
+                    OptionId: $(radio).val(),
+                },
+                success: function (response) {
+                    if (response.success) {
+                        var ItemId = $(radio).parent().parent().attr('id');
+                        $("#" + ItemId).addClass("bg-success");
+                        $('#Q' + $('#txtCurrentQuestion').val()).addClass('bg-success');
+                        $("#reightQs").text(parseInt($("#reightQs").text())+1)
+                    } else {
+                        var ItemId = $(radio).parent().parent().attr('id');
+                        $('#Q' + $('#txtCurrentQuestion').val()).addClass('bg-danger');
+                        $("#" + ItemId).addClass("bg-danger");
+                    }
+                },
+                error: function (response) {
+                    alert("Some Thing Went Wrong!");
+                }
+            })
+        }
+
+
+
+
+        function sTime(totalQuestions) {
+            $("#remainingQs").text($("#txtTotalQuestions").val()-1);
+            $("#answeredQs").text(0);
+            $("#reightQs").text(0);
+
+
+            var time = new Date();
+            var countDownTime = time.setMinutes(time.getMinutes() + (totalQuestions * 1.2));
+            var x = setInterval(function () {
+                var now = new Date().getTime();
+                var distance = countDownTime - now;
+                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                document.getElementById("testTime").innerHTML = + hours + ":" + minutes + ":" + seconds;
+
+                if (distance < 0) {
+                    clearInterval(x);
+                    document.getElementById("testTime").innerHTML = "Time's Up";
+                    window.location.href = "/Test/ShowResult";
+                }
+            }, 1000);
+        }
+
+        $('#btnStartTest').click(function () {
+            $(this).hide();
+            $('#mainContainer').show();
+            $('#finish').show('Table');
+            sTime();
+        })
+
+        $('#finish').click(function () {
+            var r = confirm("Press a button!");
+            if (r == true) {
+                window.location.href = '@Url.Action("ShowResult", "Test")';
+             }
+        });
+
+    </script>
+}
+
+
+

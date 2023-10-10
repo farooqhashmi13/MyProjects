@@ -1,0 +1,35 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "jquery-ajax-unobtrusive@3.2.6",
+      "destination": "wwwroot/jquery-ajax-unobtrusive/"
+    },
+    {
+      "library": "qrcodejs@1.0.0",
+      "destination": "wwwroot/lib/qrcodejs/"
+    },
+    {
+      "library": "datatables@1.10.21",
+      "destination": "wwwroot/datatables/",
+      "files": [
+        "css/dataTables.bootstrap.css",
+        "css/dataTables.bootstrap.min.css",
+        "js/dataTables.bootstrap.js",
+        "js/dataTables.bootstrap.min.js"
+      ]
+    },
+    {
+      "library": "datatables-buttons@2.2.2",
+      "destination": "wwwroot/datatables-buttons/",
+      "files": [
+        "js/dataTables.buttons.min.js"
+      ]
+    },
+    {
+      "library": "sweetalert@2.1.2",
+      "destination": "wwwroot/sweetalert/"
+    }
+  ]
+}

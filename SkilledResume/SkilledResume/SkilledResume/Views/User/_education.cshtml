@@ -1,0 +1,85 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<style>
+    .edu-icons {
+        display: none;
+    }
+
+    .resume-item:hover .edu-icons {
+        display: inline-block;
+    }
+</style>
+
+<div class="section-title">
+    <h2>Education<a href="#" data-toggle="modal" data-target="#eduModal"><i class="fas fa-plus-circle ml-2"></i></a></h2>
+    <div id="edu-item">
+    </div>
+</div>
+
+@*<div class="resume-item">
+        <h4>Master of Fine Arts &amp; Graphic Design</h4>
+        <h5>2015 - 2016</h5>
+        <p><em>Rochester Institute of Technology, Rochester, NY</em></p>
+        <p>Qui deserunt veniam. Et sed aliquam labore tempore sed quisquam iusto autem sit. Ea vero voluptatum qui ut dignissimos deleniti nerada porti sand markend</p>
+    </div>
+    <br />
+
+    <div class="resume-item">
+        <h4>Bachelor of Fine Arts &amp; Graphic Design</h4>
+        <h5>2010 - 2014</h5>
+        <p><em>Rochester Institute of Technology, Rochester, NY</em></p>
+        <p>Quia nobis sequi est occaecati aut. Repudiandae et iusto quae reiciendis et quis Eius vel ratione eius unde vitae rerum voluptates asperiores voluptatem Earum molestiae consequatur neque etlon sader mart dila</p>
+    </div>*@
+
+<div class="modal fade" id="eduModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form asp-action="SaveEdu" data-ajax="true" data-ajax-success="eduSuccess" data-ajax-action="post">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Education</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <input type="hidden" id="EduId" name="EduId"/>
+                    <div class="form-group">
+                        <label for="EduDegreeTitle">Digree Title</label>
+                        <input type="text" class="form-control" id="EduDegreeTitle" name="EduDegreeTitle" />
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="EduFromDate">Form</label>
+                                <input type="month" class="form-control" id="EduFromDate" name="EduFromDate" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="EduToDate">To</label>
+                                <input type="month" class="form-control" id="EduToDate" name="EduToDate" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="EduInstitute">Institute</label>
+                        <input type="text" class="form-control" id="EduInstitute" name="EduInstitute" />
+                    </div>
+                    <div class="form-group">
+                        <label for="EduDescription">Description</label>
+                        <textarea class="form-control" id="EduDescription" name="EduDescription" rows="4"></textarea>
+                    </div>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-primary" value="Save" />
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

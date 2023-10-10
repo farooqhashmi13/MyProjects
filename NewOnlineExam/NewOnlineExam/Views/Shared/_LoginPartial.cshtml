@@ -1,0 +1,47 @@
+﻿@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
+        if (User.IsInRole("Admin"))
+        {
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-4" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-user"></i> Hello @User.Identity.GetUserName().Substring(0, User.Identity.GetUserName().IndexOf("@"))
+                </a>
+                <div class="dropdown-menu dropdown-menu-right dropdown-info" aria-labelledby="navbarDropdownMenuLink-4">
+                    <a class="dropdown-item" href="/admin">Dashboard</a>
+                    <a href="javascript:document.getElementById('logoutForm').submit()" class="dropdown-item">Log off</a>
+                </div>
+            </li>
+        }
+        else
+        {
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-4" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-user"></i> Hello @User.Identity.GetUserName().Substring(0, User.Identity.GetUserName().IndexOf("@"))
+                </a>
+                <div class="dropdown-menu dropdown-menu-right dropdown-info" aria-labelledby="navbarDropdownMenuLink-4">
+                    <a class="dropdown-item" href="#">Profile</a>
+                    <a class="dropdown-item" href="#">Change Password</a>
+                    <a href="javascript:document.getElementById('logoutForm').submit()" class="dropdown-item">Log off</a>
+                </div>
+            </li>
+
+        }
+    }
+}
+else
+{
+    <li class="nav-item">
+        <a class="nav-link" href="@Url.Action("Login", "Account", new { id = "registerLink" })">
+            <i class="fas fa-sign-in-alt"></i> Sign In
+        </a>
+    </li>
+    <li class="nav-item border">
+        <a class="nav-link" href="@Url.Action("Register", "Account", new { id = "registerLink" })">Sign Up</a>
+    </li>
+}

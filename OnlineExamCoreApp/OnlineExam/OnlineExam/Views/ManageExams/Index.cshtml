@@ -1,0 +1,219 @@
+﻿@{
+    ViewData["Title"] = "Exams";
+    Layout = "_LayoutAdmin";
+}
+
+<br />
+
+<h3>Exams</h3>
+<hr />
+
+<!-- Modal -->
+<div class="modal fade" id="examsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="ExamId"/>
+                <label>Select Subject</label>
+                <select id="SubjectId" class="form-control" asp-items="ViewBag.SubjectId"></select>
+                <label>Gained Marks</label>
+                <input type="text" class="form-control" id="GainedMarks" />
+                <label>Total Marks</label>
+                <input type="text" class="form-control" id="TotalMarks" />
+                <label>Exam Date</label>
+                <input type="date" class="form-control" id="ExamDate" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-save">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<table id="exams-dt" class="table table-bordered table-striped table-responsive d-lg-table w-100">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Id</th>
+            <th>UserId</th>
+            <th>SubjectId</th>
+            <th>Exam Date</th>
+            <th>User Name</th>
+            <th>Exam Subject</th>
+            <th>Total Marks</th>
+            <th>Gained Marks</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+</table>
+
+@section scripts{
+
+    <script>
+        var rowData;
+
+        var table = $('#exams-dt').DataTable({
+            dom: 'Bfrtip',
+            columnDefs: [
+                {
+                    orderable: false,
+                    className: 'select-checkbox',
+                    targets: 0
+                },
+                {
+                    visible: false,
+                    targets: [1, 2, 3, 4]
+                }
+            ],
+            select: {
+                style: 'os',
+                selector: 'td:first-child'
+            },
+            buttons: {
+                buttons: [
+                    {
+                        text: '<i class="fa fa-edit mr-2"></i>Edit',
+                        className: 'btn-success',
+                        action: function (e, dt, node, config) {
+                            Edit();
+                        }
+                    },
+                    {
+                        text: '<i class="fas fa-trash-alt mr-2"></i>Delete',
+                        className: 'btn-danger',
+                        action: function (e, dt, node, config) {
+                            Delete();
+                        }
+                    }
+                ],
+                dom: {
+                    button: {
+                        className: 'btn btn-sm'
+                    },
+                    buttonLiner: {
+                        tag: null
+                    }
+                }
+            },
+            "ajax": {
+                "url": '/ManageExams/Get',
+                "type": 'get'
+            },
+            "columns": [
+                { "data": "i" },
+                { "data": "id" },
+                { "data": "userId" },
+                { "data": "subjectId" },
+                { "data": "examDate" },
+                { "data": "userName" },
+                { "data": "examSubject" },
+                { "data": "totalMarks" },
+                { "data": "gainedMarks" },
+                { "data": "examDateS" }
+            ]
+        });
+
+        $('#exams-dt').on('click', 'tbody td:first-child', function () {
+
+            var row = $(this).closest('tr');
+
+            if (row.hasClass('selected')) {
+                row.removeClass('selected');
+                rowData = null;
+            }
+            else {
+                table.$('tr.selected').removeClass('selected');
+                row.addClass('selected');
+                rowData = table.row('.selected').data();
+            }
+        });
+
+        function Edit() {
+            if (rowData == null) {
+                swal("Error!", "No Row Selected!", "error");
+                return;
+            }
+            $('#ExamId').val(rowData.id);
+            $('#SubjectId').val(rowData.subjectId);
+            $('#UserName').val(rowData.userName);
+            $('#GainedMarks').val(rowData.gainedMarks);
+            $('#TotalMarks').val(rowData.totalMarks);
+            $('#ExamDate').val(rowData.examDate);
+
+            $('#examsModal').modal('toggle');
+        }
+
+        function Delete() {
+            if (rowData == null) {
+                swal("Error!", "No Row Selected!", "error");
+                return;
+            }
+
+            swal({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover this row!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            url: '/ManageExams/Delete',
+                            method: 'delete',
+                            data: { Id: rowData.id },
+                            success: function (res) {
+                                swal("Selected row has been deleted!", {
+                                    icon: "success",
+                                });
+                                rowData = null;
+                                table.ajax.reload();
+                            }
+                        });
+                    }
+                });
+        }
+
+        $('.btn-save').on('click', function () {
+            $.ajax({
+                url: '/ManageExams/Edit',
+                method: 'post',
+                data: {
+                    'id': $('#ExamId').val(),
+                    'subjectId': $('#SubjectId').val(),
+                    'gainedMarks': $('#GainedMarks').val(),
+                    'totalMarks': $('#TotalMarks').val(),
+                    'examDate': $('#examDate').val()
+                },
+                success: function (res) {
+                    if (res.success) {
+                        $('#examsModal').modal('toggle');
+                        swal("Success!", "Data Saved Successfully!", "success");
+                        table.ajax.reload();
+                    }
+                    else {
+                        swal("Error!", res.message, "error");
+                    }
+                }
+            });
+        });
+
+        $('#examsModal').on('hidden.bs.modal', function () {
+            $('#ExamId').val(rowData.id);
+            $('#SubjectId').prop('selectedIndex', 0);
+            $('#GainedMarks').val(rowData.gainedMarks);
+            $('#TotalMarks').val(rowData.totalMarks);
+            $('#ExamDate').val(rowData.examDate);
+        });
+
+
+
+    </script>
+
+}

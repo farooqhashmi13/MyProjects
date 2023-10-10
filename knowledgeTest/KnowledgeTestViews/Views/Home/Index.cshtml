@@ -1,0 +1,98 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<!-- Jumbotron -->
+<div id="intro" class="p-5 text-center text-white shadow-5 rounded-5 mb-5"
+     style="background: linear-gradient(
+            45deg,
+            rgba(29, 236, 197, 0.7),
+            rgba(91, 14, 214, 0.7) 100%);">
+    <h1 class="mb-3 h2">ETestingNow.Com</h1>
+    <p class="mb-3">Best & free testing website</p>
+
+    @*<a class="btn btn-outline-white btn-lg m-2" href="@Url.Action("Index", "Exam")" role="button">Start the test</a>*@
+</div>
+<!-- Jumbotron -->
+
+<div class="card">
+    <div class="card-body py-5">
+        <div class="card-title">
+            <h3>About</h3>
+        </div>
+        <p>
+            ETestingNow provides online training for academic exams as well as for competitive exams like NTS, GAT, NAT etc. This
+            <a href="/online-test">Online Test</a> consists of 15 set of questions these questions are in the form of <a href="/online-mcqs">MCQs</a>.
+        </p>
+        <div class="row">
+            <div class="col-3 text-center topDown row-eq-height">
+                <div class="card">
+                    <i class="fa fa-edit fa-5x"></i>
+                    <div class="card-body">
+                        <h5 class="card-title ">Admissions</h5>
+                        <a href="https://www.numl.edu.pk/admission" class="btn btn-primary btn-sm">Apply Now&nbsp;&nbsp;<i class="fa fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3 text-center topDown row-eq-height">
+                <div class="card">
+                    <i class="fa fa-edit fa-5x"></i>
+                    <div class="card-body">
+                        <h5 class="card-title ">Admissions</h5>
+                        <a href="https://www.numl.edu.pk/admission" class="btn btn-primary btn-sm">Apply Now&nbsp;&nbsp;<i class="fa fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3 text-center topDown row-eq-height">
+                <div class="card">
+                    <i class="fa fa-edit fa-5x"></i>
+                    <div class="card-body">
+                        <h5 class="card-title ">Admissions</h5>
+                        <a href="https://www.numl.edu.pk/admission" class="btn btn-primary btn-sm">Apply Now&nbsp;&nbsp;<i class="fa fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3 text-center topDown row-eq-height">
+                <div class="card">
+                    <i class="fa fa-edit fa-5x"></i>
+                    <div class="card-body">
+                        <h5 class="card-title ">Admissions</h5>
+                        <a href="https://www.numl.edu.pk/admission" class="btn btn-primary btn-sm">Apply Now&nbsp;&nbsp;<i class="fa fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@*<form action="/Exam/Start" class="form" method="post">
+            <div class="row mb-2">
+                @foreach (var subject in ViewBag.Subjects)
+                {
+                    <div class="col-md-3 d-grid mb-2">
+                        <input type="radio" class="btn-check" name="Id" id="@subject.Id" value="@subject.Id" autocomplete="off">
+                        <label class="btn btn-outline-primary btn-lg" for="@subject.Id">@subject.Name</label>
+                    </div>
+                }
+            </div>
+            <input type="submit" value="Next" class="btn btn-info float-end" />
+        </form>*@
+
+@*<p>ETestingNow provides free Test Practice to individuals looking for a platform where they can practice for job tests or academic exams.</p>*@
+@*<a class="btn btn-outline-primary btn-lg" href="@Url.Action("Index", "Exam")">Start Test Now</a>*@
+@section scripts{
+    <script>
+        $('.form').on('submit', function(e) {
+
+            if (!$('input[name=Id]').prop('checked')) {
+                e.preventDefault();
+                alert('Please select a subject');
+            }
+
+        });
+    </script>
+}

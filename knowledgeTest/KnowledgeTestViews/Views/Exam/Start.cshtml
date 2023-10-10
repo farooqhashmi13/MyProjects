@@ -1,0 +1,165 @@
+﻿@model IList<KnowledgeTestLibrary.Models.TestQuestion>
+@{
+    TempData["StartTime"] = DateTime.Now;
+}
+<style>
+    /* Hide all steps by default: */
+    .tab {
+        display: none;
+    }
+
+    /* Make circles that indicate the steps of the form: */
+    .step {
+        height: 15px;
+        width: 15px;
+        margin: 0 2px;
+        background-color: #bbbbbb;
+        border: none;
+        border-radius: 50%;
+        display: inline-block;
+        opacity: 0.5;
+    }
+
+        .step.active {
+            opacity: 1;
+        }
+
+        /* Mark the steps that are finished and valid: */
+        .step.finish {
+            background-color: #593196;
+        }
+
+    .progress {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        left: 0;
+    }
+</style>
+
+<section class="p-5 text-white" style="background: linear-gradient(
+            45deg,
+            rgba(29, 236, 197, 0.7),
+            rgba(91, 14, 214, 0.7) 100%);">
+    <h3>@TempData["Subject"] Test</h3>
+</section>
+<br />
+
+
+<form method="post" asp-action="SaveExam" id="testForm">
+    <div class="card">
+        <div class="card-body">
+            <i class="fas fa-clock"></i> <span id="demo"></span>
+
+        </div>
+    </div>
+    <br />
+    @for (int i = 0; i < Model.Count(); i++)
+    {
+        <input asp-for="@Model[i].QuestionId" type="hidden" />
+        <div class="tab">
+            <div class="card mb-2">
+
+                <div class="progress">
+                    <div class="progress-bar bg-secondary" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+
+                <div class="card-header bg-secondary text-white">
+                    <h5><strong>Q#@(i+1): @Model[i].Question.Statement</strong></h5>
+                </div>
+
+                <div class="card-body">
+                    <ol type="A">
+                        @for (int x = 0; x < 4; x++)
+                        {
+                            <li class="mb-2">
+                                <div class="d-lg-grid">
+                                    <input type="radio" asp-for="@Model[i].SelectedOption" id="@Model[i].Question.Options[x].Id" value="@Model[i].Question.Options[x].Id" class="btn-check">
+                                    <label class="btn btn-light btn-rounded btn-lg shadow-none" for="@Model[i].Question.Options[x].Id">@Model[i].Question.Options[x].Statement</label>
+                                </div>
+                            </li>
+                        }
+                    </ol>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="btn-group gap-2 float-end" role="group">
+        <button class="btn btn-secondary" type="button" id="prevBtn" onclick="nextPrev(-1)"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
+        <button class="btn btn-secondary" type="button" id="nextBtn" onclick="nextPrev(1)"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+        <input type="submit" class="btn btn-lg btn-primary" value="Submit Now" />
+    </div>
+
+</form>
+<br />
+@section scripts{
+<script>
+        var currentTab = 0; // Current tab is set to be the first tab (0)
+        showTab(currentTab); // Display the current tab
+
+        var total = @Model.Count();
+
+        WidthProgressBar(currentTab+1);
+
+        // Set the date we're counting down to
+    var countDownDate = new Date().getTime() + 15 * 60 * 1000;
+
+    // Update the count down every 1 second
+    var x = setInterval(function() {
+
+      // Get today's date and time
+      var now = new Date().getTime();
+
+      // Find the distance between now and the count down date
+      var distance = countDownDate - now;
+
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      // Output the result in an element with id="demo"
+      document.getElementById("demo").innerHTML = minutes + "m " + seconds + "s ";
+
+      // If the count down is over, write some text
+      if (distance < 0) {
+        $('#testForm').submit();
+      }
+    }, 1000);
+
+
+        function showTab(n) {
+        // This function will display the specified tab of the form...
+        var x = document.getElementsByClassName("tab");
+        x[n].style.display = "block";
+        //... and fix the Previous/Next buttons:
+        if (n == 0) {
+        $("#prevBtn").prop('disabled', true);
+        } else {
+        $("#prevBtn").prop('disabled', false);
+        }
+        if (n == (x.length - 1)) {
+        $("#nextBtn").prop('disabled', true);
+        } else {
+        $("#nextBtn").prop('disabled', false);
+        }
+        }
+
+        function nextPrev(n) {
+        // This function will figure out which tab to display
+        var x = document.getElementsByClassName("tab");
+        // Hide the current tab:
+        x[currentTab].style.display = "none";
+        // Increase or decrease the current tab by 1:
+        currentTab = currentTab + n;
+        // Otherwise, display the correct tab:
+        WidthProgressBar(currentTab+1);
+        showTab(currentTab);
+        }
+
+        function WidthProgressBar(tab){
+
+            var width = (tab/total)*100;
+
+            $('.progress-bar').css('width', width+'%');
+        }
+</script>
+}

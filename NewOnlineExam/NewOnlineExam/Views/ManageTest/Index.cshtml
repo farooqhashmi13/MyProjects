@@ -1,0 +1,124 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="wrapper-editor">
+
+    <div class="row d-flex justify-content-center modalWrapper">
+
+        <div class="text-center">
+            <button class="btn btn-secondary btn-sm btn-rounded buttonDetails" data-toggle="modal" disabled data-target="">
+                Details<i class="fas fa-bars ml-1"></i>
+            </button>
+        </div>
+
+        <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="modalDelete"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header text-center">
+                        <h4 class="modal-title w-100 font-weight-bold ml-5 text-danger">Delete</h4>
+                        <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body mx-3">
+                        <p class="text-center h4">Are you sure to delete this row?</p>
+                        <input id="username-d" type="text" disabled class="form-control" />
+                        <input id="testcategory-d" type="text" disabled class="form-control" />
+                        <input id="totalscore-d" type="text" disabled class="form-control" />
+                        <input id="score-d" type="text" disabled class="form-control" />
+                        <input id="timetakken-d" type="text" disabled class="form-control" />
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center deleteButtonsWrapper">
+                        <button type="button" class="btn btn-danger btnYesClass" id="btnYes" data-dismiss="modal">Yes</button>
+                        <button type="button" class="btn btn-primary btnNoClass" id="btnNo" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive-lg table-hover">
+        <table id="dt-basic-checkbox" class="table bg-white" width="100%">
+            <thead>
+                <tr>
+                    <th class="th-sm"></th>
+                    <th class="th-sm">
+                        User Name
+                    </th>
+                    <th class="th-sm">
+                        Test Count
+                    </th>
+                    <th class="th-sm">
+                        Total Average
+                    </th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div id="snackbar">
+        <i style="display:none" id="icon-success" class="fas fa-check text-success"> Succeeded..</i>
+        <i style="display:none" id="icon-danger" class="fas fa-exclamation-triangle text-danger"> Something went wrong..</i>
+    </div>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        var rowData;
+
+        var table = $('#dt-basic-checkbox').dataTable({
+
+            columnDefs: [
+                {
+                    orderable: false,
+                    className: 'select-checkbox',
+                    targets: 0
+                }
+            ],
+            select: {
+                style: 'os',
+                selector: 'td:first-child'
+            },
+
+            "ajax": {
+                "url": '/ManageTest/GetData',
+                "type": 'post',
+            },
+            "columns": [
+                { "data": "i" },
+                { "data": "UserName" },
+                { "data": "TestCount" },
+                { "data": "TestAverage" }
+            ]
+        });
+
+        $('#dt-basic-checkbox').on('click', 'tbody td:first-child', function () {
+
+            var row = this.closest('tr');
+
+            rowData = $('#dt-basic-checkbox').DataTable().row($(this).parents('tr')).data();
+
+            if ($(row).hasClass('selected')) {
+                $('.buttonDetails').prop('disabled', true);
+                $('.buttonDelete').prop('disabled', true);
+            }
+            else {
+                $('.buttonDetails').prop('disabled', false);
+                $('.buttonDelete').prop('disabled', false);
+            }
+
+        });
+
+        $('.buttonDetails').on('click', function () {
+            window.location.href = '/ManageTest/UserTestDetails?Id=' + rowData.UserId;
+        });
+
+    </script>
+}
+
+

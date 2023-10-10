@@ -1,0 +1,206 @@
+﻿@model KnowledgeTestLibrary.Models.Subject
+@{
+    Layout = "_LayoutAdmin";
+}
+
+<div class="modal fade" id="subjectsModal" tabindex="-1" aria-labelledby="subjectsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="subjectsModalLabel">Subject</h5>
+                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="SaveData" data-ajax="true" data-ajax-method="post" data-ajax-success="OnSuccess">
+                    <input asp-for="Id" type="hidden" />
+                    <div class="row">
+                        <div class="col-md-8">
+                            <input asp-for="Name" class="form-control" placeholder="Enter Subject Name" />
+                        </div>
+                        <div class="col-md-4">
+                            <input type="submit" class="btn btn-primary btn-save" value="Save" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />
+<br />
+<br />
+<table id="subjects-dt" class="table table-bordered table-hover table-stripped table-sm" style="width:100%">
+    <thead class="bg-dark text-white">
+        <tr>
+            <th>Subject(s)</th>
+            <th>Total Questions</th>
+            <th>Enable/Disable</th>
+        </tr>
+    </thead>
+</table>
+
+@section scripts{
+    <script>
+
+        var rowData;
+        const myModalEl = document.getElementById('subjectsModal');
+        const modal = new mdb.Modal(myModalEl);
+
+        var table = $('#subjects-dt').dataTable({
+            dom: 'Bfrtip',
+            ajax: {
+                "url": '/Subjects/GetData'
+            },
+            "columns": [
+                { "data": "name" },
+                { "data": "count" },
+                {
+                    "data": "id",
+                    render: function(data, type, row, meta) {
+                        if (row.isEnabled) {
+                            return '<div class="form-check form-switch">'
+                                + '<input class="form-check-input" type="checkbox" data-id="' + row.id + '" onchange="enableSubject(this)" checked />'
+                                + ' </div>'
+                        }
+                        else {
+                            return '<div class="form-check form-switch">'
+                                + '<input class="form-check-input" type="checkbox" data-id="' + row.id + '" onchange="enableSubject(this)" />'
+                                + ' </div>'
+                        }
+                    }
+
+                }
+            ],
+            buttons: [
+                {
+                    text: '<i class="fas fa-plus"></i>',
+                    className: 'btn btn-info btn-floating',
+                    action: function(e, dt, node, config) {
+
+                        $('#subjectsModalLabel').text('Add new Subject');
+
+                        $('#Id').val(0);
+                        $('#Name').val('');
+                        modal.show();
+                    }
+                },
+                {
+                    text: '<i class="fas fa-edit"></i>',
+                    className: 'btn btn-success btn-floating',
+                    action: function(e, dt, node, config) {
+
+                        if (rowData == null) {
+                            swal("Please select a row!");
+                            return;
+                        }
+
+                        $('#subjectsModalLabel').text('Edit Selected Subject');
+                        $('#Id').val(rowData.id);
+                        $('#Name').val(rowData.name);
+                        modal.show();
+                    }
+                },
+                {
+                    text: '<i class="fas fa-trash"></i>',
+                    className: 'btn btn-danger btn-floating',
+                    action: function(e, dt, node, config) {
+
+                        if (rowData == null) {
+                            swal("Please select a row!");
+                            return;
+                        }
+
+                        var obj = {
+                            'Id': rowData.id,
+                            'Name': rowData.name
+                        };
+
+                        swal({
+                            title: "Are you sure?",
+                            text: "Once deleted, you will not be able to recover this!",
+                            icon: "warning",
+                            buttons: true,
+                            dangerMode: true,
+                        })
+                            .then((willDelete) => {
+                                if (willDelete) {
+                                    $.ajax({
+                                        url: '/subjects/DeleteData',
+                                        method: 'delete',
+                                        data: obj,
+                                        success: function(res) {
+                                            if (res.success) {
+                                                swal("Subject Deleted!");
+                                                table.DataTable().ajax.reload();
+                                                rowData = null;
+                                            }
+                                            else {
+                                                swal("Something went wrong!");
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                    }
+                }
+            ]
+        });
+
+        $('#subjects-dt tbody').on('click', 'tr', function() {
+            if ($(this).hasClass('selected')) {
+
+                $(this).removeClass('selected');
+
+                rowData = null;
+
+            }
+            else {
+
+                table.$('tr.selected').removeClass('selected');
+
+                $(this).addClass('selected');
+
+                var row = this.closest('tr');
+
+                var paretRow = $('#subjects-dt').DataTable().row($(this));
+
+                rowData = paretRow.data();
+
+            }
+        });
+
+        $('#subjectId').change(function() {
+            table.DataTable().ajax.reload();
+        });
+
+        function OnSuccess(res) {
+            swal("Success!");
+            table.DataTable().ajax.reload();
+            rowData = null;
+            modal.toggle();
+        }
+
+        function enableSubject(check) {
+
+            var id = $(check).data('id');
+            var value = $(check).prop('checked');
+
+            $.ajax({
+                url: '/subjects/enable',
+                method: 'post',
+                data: { Id: id, value: value },
+                success: function(res) {
+                    if (res.success) {
+                        swal("Success!");
+                        table.DataTable().ajax.reload();
+                    }
+                    else {
+                        swal("Something went wrong!");
+                    }
+                }
+            });
+        }
+
+    </script>
+}
